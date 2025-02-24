@@ -9,6 +9,11 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Net;
 using UnalColombia.Common.Extensions.Program;
 using UnalColombia.Common.Extensions.Dto;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using UnalColombia.Logistic.TAS.Domain.Entities;
+using UnalColombia.Common.API;
+using System.Collections.Generic;
+using UnalColombia.Logistic.TAS.Api.Controllers;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,19 +39,21 @@ IServiceCollection services = builder.Services;
 // Add db Context
 services.AddDbContext<TASDbContext>(opt =>
 {
-    opt.UseSqlServer(configuration["DataBaseSettings:StringConnection"]);
+    opt.UseSqlServer(configuration["StringConnections:tasdb"],
+        x => x.MigrationsAssembly("UnalColombia.Logistic.TAS.Infrastructure"));
 });
 
+//builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// Add services to the container.
-builder.Services.AddControllers();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-
 var app = builder.Build();
+
+APIExtension.CreateCRUDEnpoint(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -78,11 +85,11 @@ app.UseExceptionHandler(exceptionHandlerApp =>
     });
 });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
-app.MapControllers();
+//app.MapControllers();
 
 app.Run();
 

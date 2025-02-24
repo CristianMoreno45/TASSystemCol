@@ -1,0 +1,1 @@
+ dotnet ef --startup-project ./UnalColombia.Logistic.TAS.Api.csproj migrations add Initial --context TASDbContext --output-dir Migrations --project ../UnalColombia.Logistic.TAS.Infrastructure/UnalColombia.Logistic.TAS.Infrastructure.csproj
