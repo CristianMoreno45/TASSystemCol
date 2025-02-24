@@ -1,0 +1,6 @@
+@UnalColombia.Logistic.TAS.Api_HostAddress = http://localhost:5084
+
+GET {{UnalColombia.Logistic.TAS.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
