@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Identity;
 using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
 using UnalColombia.Logistic.TAS.Domain.Validators;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Console;
@@ -9,11 +7,10 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Net;
 using UnalColombia.Common.Extensions.Program;
 using UnalColombia.Common.Extensions.Dto;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using UnalColombia.Logistic.TAS.Domain.Entities;
-using UnalColombia.Common.API;
-using System.Collections.Generic;
 using UnalColombia.Logistic.TAS.Api.Controllers;
+using UnalColombia.Logistic.TAS.Api.Handlers;
+using UnalColombia.Logistic.TAS.Domain.Repositories;
+using UnalColombia.Logistic.TAS.Infrastructure.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,16 +40,56 @@ services.AddDbContext<TASDbContext>(opt =>
         x => x.MigrationsAssembly("UnalColombia.Logistic.TAS.Infrastructure"));
 });
 
-//builder.Services.AddScoped<IUserRepository, UserRepository>();
+// Agregar servicios para controladores
+builder.Services.AddControllers();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICalendarRepository, CalendarRepository>();
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+builder.Services.AddScoped<IAppointmentStateRepository, AppointmentStateRepository>();
+builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
+builder.Services.AddScoped<ICityRepository, CityRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<IMissionRepository, MissionRepository>();
+builder.Services.AddScoped<ITerminalOperatorRepository, TerminalOperatorRepository>();
+builder.Services.AddScoped<IMissionAppointmentRepository, MissionAppointmentRepository>();
+builder.Services.AddScoped<IWalletUserRepository, WalletUserRepository>();
+builder.Services.AddScoped<IWalletRepository, WalletRepository>();
+builder.Services.AddScoped<ISuperPowerRepository, SuperPowerRepository>();
 
 
+builder.Services.AddScoped<ICalendarHandler, CalendarHandler>();
+builder.Services.AddScoped<IUserHandler, UserHandler>();
+builder.Services.AddScoped<IDriverHandler, DriverHandler>();
+builder.Services.AddScoped<IAppointmentStateHandler, AppointmentStateHandler>();
+builder.Services.AddScoped<IProviderHandler, ProviderHandler>();
+builder.Services.AddScoped<ICityHandler, CityHandler>();
+builder.Services.AddScoped<IAppointmentHandler, AppointmentHandler>();
+builder.Services.AddScoped<ILocationHandler, LocationHandler>();
+builder.Services.AddScoped<IMissionHandler, MissionHandler>();
+builder.Services.AddScoped<ITerminalOperatorHandler, TerminalOperatorHandler>();
+builder.Services.AddScoped<IMissionAppointmentHandler, MissionAppointmentHandler>();
+builder.Services.AddScoped<IWalletUserHandler, WalletUserHandler>();
+builder.Services.AddScoped<ISuperPowerHandler, SuperPowerHandler>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+services.ConfigureJsonPreferences()
+    .AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    ); // Add Json configuration
+
+
 var app = builder.Build();
 
+// Mapear los controladores tradicionales
+app.MapControllers();
+
+// Definir endpoints con Minimal API
 APIExtension.CreateCRUDEnpoint(app);
 
 // Configure the HTTP request pipeline.
@@ -85,11 +122,7 @@ app.UseExceptionHandler(exceptionHandlerApp =>
     });
 });
 
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
-
-//app.MapControllers();
+app.UseHttpsRedirection().UseCors("MyPolicy");//.UseAuthentication().UseAuthorization(); 
 
 app.Run();
 

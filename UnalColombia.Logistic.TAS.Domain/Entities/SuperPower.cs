@@ -12,10 +12,10 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public Guid CreatedUserId { get; set; }
         public DateTime? LastUpdatedDate { get; set; }
         public Guid? LastUpdatedUserId { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = false;
 
-        public virtual User CreatedByUserId{ get; set; }
-        public virtual User? UpdatedByUserId { get; set; }
+        public virtual User CreatedByUser { get; set; }
+        public virtual User? UpdatedByUser { get; set; }
 
     }
 }

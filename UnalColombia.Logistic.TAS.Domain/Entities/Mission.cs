@@ -8,14 +8,14 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
 
         public string? Description { get; set; }
 
-        public bool IsAchieved { get; set; }
+        
         public decimal Points { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public Guid CreatedUserId { get; set; } 
         public DateTime? LastUpdatedDate { get; set; }
         public Guid? LastUpdatedUserId { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual User CreatedByUser { get; set; }
         public virtual User? UpdatedByUser { get; set; }

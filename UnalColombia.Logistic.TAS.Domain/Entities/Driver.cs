@@ -11,7 +11,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public int IdentificationTypeId { get; set; }
         public string IdentificationNumber { get; set; }
         public string? Notes { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual User User { get; set; }
         public virtual IdentificationType IdentificationType { get; set; }

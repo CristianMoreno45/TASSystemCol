@@ -10,8 +10,8 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public string Description { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan FinishTime { get; set; }
-        public bool HasOverlaping { get; set; }
-        public bool IsActive { get; set; }
+        public bool HasOverlaping { get; set; } = true;
+        public bool IsActive { get; set; } = true;
 
         public virtual Terminal Terminal { get; set; }
         public virtual ICollection<DayOfWeekSettings>? DayOfWeekSettings { get; set; }

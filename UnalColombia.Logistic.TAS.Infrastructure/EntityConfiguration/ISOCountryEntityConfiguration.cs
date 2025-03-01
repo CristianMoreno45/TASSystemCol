@@ -38,9 +38,9 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.EntityConfiguration
                 .IsRequired(false);
 
             entity.HasMany(e => e.DestinationCargoInformationList)
-              .WithOne(a => a.GeographicalLocationDestination)
-              .HasForeignKey(e => e.GeographicalLocationDestinationISOCountryId)
-              .IsRequired(false);
+                .WithOne(a => a.GeographicalLocationDestination)
+                .HasForeignKey(e => e.GeographicalLocationDestinationISOCountryId)
+                .IsRequired(false);
         }
     }
 }

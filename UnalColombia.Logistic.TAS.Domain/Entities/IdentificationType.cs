@@ -9,7 +9,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public string? Code1 { get; set; }
         public string? Code2 { get; set; }
         public string? Code3 { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual ICollection<Driver>? Drivers { get; set; }
     }

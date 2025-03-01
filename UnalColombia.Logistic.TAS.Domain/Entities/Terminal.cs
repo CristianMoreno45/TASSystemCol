@@ -9,7 +9,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public string Name { get; set; }
         public string? Url { get; set; }
         public int GeographicLocationCityId { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual Operator Operator { get; set; }
         public virtual City City { get; set; }

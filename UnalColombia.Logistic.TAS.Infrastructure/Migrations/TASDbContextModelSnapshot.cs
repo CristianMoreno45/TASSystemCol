@@ -48,8 +48,8 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.Property<Guid>("DriverId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<TimeSpan>("FinishTime")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("FinishTime")
+                        .HasColumnType("datetime");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -66,8 +66,8 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.Property<Guid>("ProviderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -112,6 +112,9 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReserve")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -126,6 +129,89 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("TerminalId");
 
                     b.ToTable("AppointmentStates");
+
+                    b.HasData(
+                        new
+                        {
+                            AppointmentStateId = 1,
+                            AllowChanges = true,
+                            IsActive = true,
+                            IsReserve = true,
+                            Name = "Asignada",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            AppointmentStateId = 2,
+                            AllowChanges = true,
+                            IsActive = true,
+                            IsReserve = false,
+                            Name = "Aprobada",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            AppointmentStateId = 3,
+                            AllowChanges = false,
+                            IsActive = true,
+                            IsReserve = false,
+                            Name = "Cumplida",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            AppointmentStateId = 4,
+                            AllowChanges = false,
+                            IsActive = true,
+                            IsReserve = false,
+                            Name = "Incumplida",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            AppointmentStateId = 5,
+                            AllowChanges = false,
+                            IsActive = true,
+                            IsReserve = false,
+                            Name = "Cancelada",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            AppointmentStateId = 6,
+                            AllowChanges = false,
+                            IsActive = true,
+                            IsReserve = false,
+                            Name = "Cancelada",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            AppointmentStateId = 8,
+                            AllowChanges = true,
+                            IsActive = true,
+                            IsReserve = true,
+                            Name = "Asinada",
+                            TerminalId = 2
+                        },
+                        new
+                        {
+                            AppointmentStateId = 9,
+                            AllowChanges = true,
+                            IsActive = true,
+                            IsReserve = false,
+                            Name = "Aprobada",
+                            TerminalId = 2
+                        },
+                        new
+                        {
+                            AppointmentStateId = 10,
+                            AllowChanges = true,
+                            IsActive = true,
+                            IsReserve = false,
+                            Name = "Cancelada",
+                            TerminalId = 2
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.Calendar", b =>
@@ -166,6 +252,52 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("TerminalId");
 
                     b.ToTable("Calendars");
+
+                    b.HasData(
+                        new
+                        {
+                            CalendarId = new Guid("ac0a14cc-547e-47f8-8ec8-32bb7aecd4dc"),
+                            Description = "Calendario diseñado para el uso de clientes ocasionales",
+                            FinishTime = new TimeSpan(0, 22, 0, 0, 0),
+                            HasOverlaping = true,
+                            IsActive = true,
+                            Name = "General 1",
+                            StartTime = new TimeSpan(0, 6, 0, 0, 0),
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            CalendarId = new Guid("e6b4ebe7-625b-4e16-ad1c-8a3b85c475e9"),
+                            Description = "Calendario diseñado para el uso de clientes ocasionales",
+                            FinishTime = new TimeSpan(0, 22, 0, 0, 0),
+                            HasOverlaping = true,
+                            IsActive = true,
+                            Name = "General 2",
+                            StartTime = new TimeSpan(0, 6, 0, 0, 0),
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            CalendarId = new Guid("d78d5862-ec55-4222-96bb-507a660d8f3a"),
+                            Description = "Calendario diseñado para el uso de clientes premium",
+                            FinishTime = new TimeSpan(0, 23, 0, 0, 0),
+                            HasOverlaping = true,
+                            IsActive = true,
+                            Name = "Premium",
+                            StartTime = new TimeSpan(0, 3, 0, 0, 0),
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            CalendarId = new Guid("20bc58ed-cd6a-4053-ad7b-fc5f0706d555"),
+                            Description = "Unica opción",
+                            FinishTime = new TimeSpan(0, 23, 0, 0, 0),
+                            HasOverlaping = true,
+                            IsActive = true,
+                            Name = "Premium",
+                            StartTime = new TimeSpan(0, 3, 0, 0, 0),
+                            TerminalId = 2
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.CargoInformation", b =>
@@ -280,6 +412,71 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            IsActive = true,
+                            Name = "Ocasional",
+                            RankingNumber = 1
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            IsActive = true,
+                            Name = "Frecuente",
+                            RankingNumber = 2
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            IsActive = true,
+                            Name = "Estrella 1",
+                            RankingNumber = 3
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            IsActive = true,
+                            Name = "Estrella 2",
+                            RankingNumber = 4
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            IsActive = true,
+                            Name = "Estrella 3",
+                            RankingNumber = 5
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            IsActive = true,
+                            Name = "Estrella 4",
+                            RankingNumber = 6
+                        },
+                        new
+                        {
+                            CategoryId = 7,
+                            IsActive = true,
+                            Name = "Estrella 5",
+                            RankingNumber = 7
+                        },
+                        new
+                        {
+                            CategoryId = 8,
+                            IsActive = true,
+                            Name = "Gold",
+                            RankingNumber = 8
+                        },
+                        new
+                        {
+                            CategoryId = 9,
+                            IsActive = true,
+                            Name = "Premium",
+                            RankingNumber = 100
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.City", b =>
@@ -322,6 +519,8984 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("StateId");
 
                     b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            CityId = 1,
+                            Code1 = "05001",
+                            IsActive = false,
+                            Name = "MEDELLÍN",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 2,
+                            Code1 = "05002",
+                            IsActive = false,
+                            Name = "ABEJORRAL",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 3,
+                            Code1 = "05004",
+                            IsActive = false,
+                            Name = "ABRIAQUÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 4,
+                            Code1 = "05021",
+                            IsActive = false,
+                            Name = "ALEJANDRÍA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 5,
+                            Code1 = "05030",
+                            IsActive = false,
+                            Name = "AMAGÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 6,
+                            Code1 = "05031",
+                            IsActive = false,
+                            Name = "AMALFI",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 7,
+                            Code1 = "05034",
+                            IsActive = false,
+                            Name = "ANDES",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 8,
+                            Code1 = "05036",
+                            IsActive = false,
+                            Name = "ANGELÓPOLIS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 9,
+                            Code1 = "05038",
+                            IsActive = false,
+                            Name = "ANGOSTURA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 10,
+                            Code1 = "05040",
+                            IsActive = false,
+                            Name = "ANORÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 11,
+                            Code1 = "05042",
+                            IsActive = false,
+                            Name = "SANTA FÉ DE ANTIOQUIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 12,
+                            Code1 = "05044",
+                            IsActive = false,
+                            Name = "ANZÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 13,
+                            Code1 = "05045",
+                            IsActive = false,
+                            Name = "APARTADÓ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 14,
+                            Code1 = "05051",
+                            IsActive = false,
+                            Name = "ARBOLETES",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 15,
+                            Code1 = "05055",
+                            IsActive = false,
+                            Name = "ARGELIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 16,
+                            Code1 = "05059",
+                            IsActive = false,
+                            Name = "ARMENIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 17,
+                            Code1 = "05079",
+                            IsActive = false,
+                            Name = "BARBOSA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 18,
+                            Code1 = "05086",
+                            IsActive = false,
+                            Name = "BELMIRA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 19,
+                            Code1 = "05088",
+                            IsActive = false,
+                            Name = "BELLO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 20,
+                            Code1 = "05091",
+                            IsActive = false,
+                            Name = "BETANIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 21,
+                            Code1 = "05093",
+                            IsActive = false,
+                            Name = "BETULIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 22,
+                            Code1 = "05101",
+                            IsActive = false,
+                            Name = "CIUDAD BOLÍVAR",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 23,
+                            Code1 = "05107",
+                            IsActive = false,
+                            Name = "BRICEÑO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 24,
+                            Code1 = "05113",
+                            IsActive = false,
+                            Name = "BURITICÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 25,
+                            Code1 = "05120",
+                            IsActive = false,
+                            Name = "CÁCERES",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 26,
+                            Code1 = "05125",
+                            IsActive = false,
+                            Name = "CAICEDO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 27,
+                            Code1 = "05129",
+                            IsActive = false,
+                            Name = "CALDAS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 28,
+                            Code1 = "05134",
+                            IsActive = false,
+                            Name = "CAMPAMENTO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 29,
+                            Code1 = "05138",
+                            IsActive = false,
+                            Name = "CAÑASGORDAS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 30,
+                            Code1 = "05142",
+                            IsActive = false,
+                            Name = "CARACOLÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 31,
+                            Code1 = "05145",
+                            IsActive = false,
+                            Name = "CARAMANTA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 32,
+                            Code1 = "05147",
+                            IsActive = false,
+                            Name = "CAREPA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 33,
+                            Code1 = "05148",
+                            IsActive = false,
+                            Name = "EL CARMEN DE VIBORAL",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 34,
+                            Code1 = "05150",
+                            IsActive = false,
+                            Name = "CAROLINA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 35,
+                            Code1 = "05154",
+                            IsActive = false,
+                            Name = "CAUCASIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 36,
+                            Code1 = "05172",
+                            IsActive = false,
+                            Name = "CHIGORODÓ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 37,
+                            Code1 = "05190",
+                            IsActive = false,
+                            Name = "CISNEROS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 38,
+                            Code1 = "05197",
+                            IsActive = false,
+                            Name = "COCORNÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 39,
+                            Code1 = "05206",
+                            IsActive = false,
+                            Name = "CONCEPCIÓN",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 40,
+                            Code1 = "05209",
+                            IsActive = false,
+                            Name = "CONCORDIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 41,
+                            Code1 = "05212",
+                            IsActive = false,
+                            Name = "COPACABANA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 42,
+                            Code1 = "05234",
+                            IsActive = false,
+                            Name = "DABEIBA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 43,
+                            Code1 = "05237",
+                            IsActive = false,
+                            Name = "DONMATÍAS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 44,
+                            Code1 = "05240",
+                            IsActive = false,
+                            Name = "EBÉJICO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 45,
+                            Code1 = "05250",
+                            IsActive = false,
+                            Name = "EL BAGRE",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 46,
+                            Code1 = "05264",
+                            IsActive = false,
+                            Name = "ENTRERRÍOS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 47,
+                            Code1 = "05266",
+                            IsActive = false,
+                            Name = "ENVIGADO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 48,
+                            Code1 = "05282",
+                            IsActive = false,
+                            Name = "FREDONIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 49,
+                            Code1 = "05284",
+                            IsActive = false,
+                            Name = "FRONTINO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 50,
+                            Code1 = "05306",
+                            IsActive = false,
+                            Name = "GIRALDO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 51,
+                            Code1 = "05308",
+                            IsActive = false,
+                            Name = "GIRARDOTA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 52,
+                            Code1 = "05310",
+                            IsActive = false,
+                            Name = "GÓMEZ PLATA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 53,
+                            Code1 = "05313",
+                            IsActive = false,
+                            Name = "GRANADA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 54,
+                            Code1 = "05315",
+                            IsActive = false,
+                            Name = "GUADALUPE",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 55,
+                            Code1 = "05318",
+                            IsActive = false,
+                            Name = "GUARNE",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 56,
+                            Code1 = "05321",
+                            IsActive = false,
+                            Name = "GUATAPÉ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 57,
+                            Code1 = "05347",
+                            IsActive = false,
+                            Name = "HELICONIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 58,
+                            Code1 = "05353",
+                            IsActive = false,
+                            Name = "HISPANIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 59,
+                            Code1 = "05360",
+                            IsActive = false,
+                            Name = "ITAGÜÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 60,
+                            Code1 = "05361",
+                            IsActive = false,
+                            Name = "ITUANGO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 61,
+                            Code1 = "05364",
+                            IsActive = false,
+                            Name = "JARDÍN",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 62,
+                            Code1 = "05368",
+                            IsActive = false,
+                            Name = "JERICÓ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 63,
+                            Code1 = "05376",
+                            IsActive = false,
+                            Name = "LA CEJA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 64,
+                            Code1 = "05380",
+                            IsActive = false,
+                            Name = "LA ESTRELLA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 65,
+                            Code1 = "05390",
+                            IsActive = false,
+                            Name = "LA PINTADA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 66,
+                            Code1 = "05400",
+                            IsActive = false,
+                            Name = "LA UNIÓN",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 67,
+                            Code1 = "05411",
+                            IsActive = false,
+                            Name = "LIBORINA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 68,
+                            Code1 = "05425",
+                            IsActive = false,
+                            Name = "MACEO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 69,
+                            Code1 = "05440",
+                            IsActive = false,
+                            Name = "MARINILLA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 70,
+                            Code1 = "05467",
+                            IsActive = false,
+                            Name = "MONTEBELLO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 71,
+                            Code1 = "05475",
+                            IsActive = false,
+                            Name = "MURINDÓ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 72,
+                            Code1 = "05480",
+                            IsActive = false,
+                            Name = "MUTATÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 73,
+                            Code1 = "05483",
+                            IsActive = false,
+                            Name = "NARIÑO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 74,
+                            Code1 = "05490",
+                            IsActive = false,
+                            Name = "NECOCLÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 75,
+                            Code1 = "05495",
+                            IsActive = false,
+                            Name = "NECHÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 76,
+                            Code1 = "05501",
+                            IsActive = false,
+                            Name = "OLAYA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 77,
+                            Code1 = "05541",
+                            IsActive = false,
+                            Name = "PEÑOL",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 78,
+                            Code1 = "05543",
+                            IsActive = false,
+                            Name = "PEQUE",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 79,
+                            Code1 = "05576",
+                            IsActive = false,
+                            Name = "PUEBLORRICO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 80,
+                            Code1 = "05579",
+                            IsActive = false,
+                            Name = "PUERTO BERRÍO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 81,
+                            Code1 = "05585",
+                            IsActive = false,
+                            Name = "PUERTO NARE",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 82,
+                            Code1 = "05591",
+                            IsActive = false,
+                            Name = "PUERTO TRIUNFO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 83,
+                            Code1 = "05604",
+                            IsActive = false,
+                            Name = "REMEDIOS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 84,
+                            Code1 = "05607",
+                            IsActive = false,
+                            Name = "RETIRO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 85,
+                            Code1 = "05615",
+                            IsActive = false,
+                            Name = "RIONEGRO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 86,
+                            Code1 = "05628",
+                            IsActive = false,
+                            Name = "SABANALARGA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 87,
+                            Code1 = "05631",
+                            IsActive = false,
+                            Name = "SABANETA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 88,
+                            Code1 = "05642",
+                            IsActive = false,
+                            Name = "SALGAR",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 89,
+                            Code1 = "05647",
+                            IsActive = false,
+                            Name = "SAN ANDRÉS DE CUERQUÍA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 90,
+                            Code1 = "05649",
+                            IsActive = false,
+                            Name = "SAN CARLOS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 91,
+                            Code1 = "05652",
+                            IsActive = false,
+                            Name = "SAN FRANCISCO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 92,
+                            Code1 = "05656",
+                            IsActive = false,
+                            Name = "SAN JERÓNIMO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 93,
+                            Code1 = "05658",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DE LA MONTAÑA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 94,
+                            Code1 = "05659",
+                            IsActive = false,
+                            Name = "SAN JUAN DE URABÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 95,
+                            Code1 = "05660",
+                            IsActive = false,
+                            Name = "SAN LUIS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 96,
+                            Code1 = "05664",
+                            IsActive = false,
+                            Name = "SAN PEDRO DE LOS MILAGROS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 97,
+                            Code1 = "05665",
+                            IsActive = false,
+                            Name = "SAN PEDRO DE URABÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 98,
+                            Code1 = "05667",
+                            IsActive = false,
+                            Name = "SAN RAFAEL",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 99,
+                            Code1 = "05670",
+                            IsActive = false,
+                            Name = "SAN ROQUE",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 100,
+                            Code1 = "05674",
+                            IsActive = false,
+                            Name = "SAN VICENTE FERRER",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 101,
+                            Code1 = "05679",
+                            IsActive = false,
+                            Name = "SANTA BÁRBARA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 102,
+                            Code1 = "05686",
+                            IsActive = false,
+                            Name = "SANTA ROSA DE OSOS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 103,
+                            Code1 = "05690",
+                            IsActive = false,
+                            Name = "SANTO DOMINGO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 104,
+                            Code1 = "05697",
+                            IsActive = false,
+                            Name = "EL SANTUARIO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 105,
+                            Code1 = "05736",
+                            IsActive = false,
+                            Name = "SEGOVIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 106,
+                            Code1 = "05756",
+                            IsActive = false,
+                            Name = "SONSÓN",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 107,
+                            Code1 = "05761",
+                            IsActive = false,
+                            Name = "SOPETRÁN",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 108,
+                            Code1 = "05789",
+                            IsActive = false,
+                            Name = "TÁMESIS",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 109,
+                            Code1 = "05790",
+                            IsActive = false,
+                            Name = "TARAZÁ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 110,
+                            Code1 = "05792",
+                            IsActive = false,
+                            Name = "TARSO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 111,
+                            Code1 = "05809",
+                            IsActive = false,
+                            Name = "TITIRIBÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 112,
+                            Code1 = "05819",
+                            IsActive = false,
+                            Name = "TOLEDO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 113,
+                            Code1 = "05837",
+                            IsActive = false,
+                            Name = "TURBO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 114,
+                            Code1 = "05842",
+                            IsActive = false,
+                            Name = "URAMITA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 115,
+                            Code1 = "05847",
+                            IsActive = false,
+                            Name = "URRAO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 116,
+                            Code1 = "05854",
+                            IsActive = false,
+                            Name = "VALDIVIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 117,
+                            Code1 = "05856",
+                            IsActive = false,
+                            Name = "VALPARAÍSO",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 118,
+                            Code1 = "05858",
+                            IsActive = false,
+                            Name = "VEGACHÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 119,
+                            Code1 = "05861",
+                            IsActive = false,
+                            Name = "VENECIA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 120,
+                            Code1 = "05873",
+                            IsActive = false,
+                            Name = "VIGÍA DEL FUERTE",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 121,
+                            Code1 = "05885",
+                            IsActive = false,
+                            Name = "YALÍ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 122,
+                            Code1 = "05887",
+                            IsActive = false,
+                            Name = "YARUMAL",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 123,
+                            Code1 = "05890",
+                            IsActive = false,
+                            Name = "YOLOMBÓ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 124,
+                            Code1 = "05893",
+                            IsActive = false,
+                            Name = "YONDÓ",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 125,
+                            Code1 = "05895",
+                            IsActive = false,
+                            Name = "ZARAGOZA",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            CityId = 126,
+                            Code1 = "08001",
+                            IsActive = false,
+                            Name = "BARRANQUILLA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 127,
+                            Code1 = "08078",
+                            IsActive = false,
+                            Name = "BARANOA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 128,
+                            Code1 = "08137",
+                            IsActive = false,
+                            Name = "CAMPO DE LA CRUZ",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 129,
+                            Code1 = "08141",
+                            IsActive = false,
+                            Name = "CANDELARIA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 130,
+                            Code1 = "08296",
+                            IsActive = false,
+                            Name = "GALAPA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 131,
+                            Code1 = "08372",
+                            IsActive = false,
+                            Name = "JUAN DE ACOSTA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 132,
+                            Code1 = "08421",
+                            IsActive = false,
+                            Name = "LURUACO",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 133,
+                            Code1 = "08433",
+                            IsActive = false,
+                            Name = "MALAMBO",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 134,
+                            Code1 = "08436",
+                            IsActive = false,
+                            Name = "MANATÍ",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 135,
+                            Code1 = "08520",
+                            IsActive = false,
+                            Name = "PALMAR DE VARELA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 136,
+                            Code1 = "08549",
+                            IsActive = false,
+                            Name = "PIOJÓ",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 137,
+                            Code1 = "08558",
+                            IsActive = false,
+                            Name = "POLONUEVO",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 138,
+                            Code1 = "08560",
+                            IsActive = false,
+                            Name = "PONEDERA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 139,
+                            Code1 = "08573",
+                            IsActive = false,
+                            Name = "PUERTO COLOMBIA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 140,
+                            Code1 = "08606",
+                            IsActive = false,
+                            Name = "REPELÓN",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 141,
+                            Code1 = "08634",
+                            IsActive = false,
+                            Name = "SABANAGRANDE",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 142,
+                            Code1 = "08638",
+                            IsActive = false,
+                            Name = "SABANALARGA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 143,
+                            Code1 = "08675",
+                            IsActive = false,
+                            Name = "SANTA LUCÍA",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 144,
+                            Code1 = "08685",
+                            IsActive = false,
+                            Name = "SANTO TOMÁS",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 145,
+                            Code1 = "08758",
+                            IsActive = false,
+                            Name = "SOLEDAD",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 146,
+                            Code1 = "08770",
+                            IsActive = false,
+                            Name = "SUAN",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 147,
+                            Code1 = "08832",
+                            IsActive = false,
+                            Name = "TUBARÁ",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 148,
+                            Code1 = "08849",
+                            IsActive = false,
+                            Name = "USIACURÍ",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            CityId = 149,
+                            Code1 = "11001",
+                            IsActive = false,
+                            Name = "BOGOTÁ, D.C.",
+                            StateId = 3
+                        },
+                        new
+                        {
+                            CityId = 150,
+                            Code1 = "13001",
+                            IsActive = false,
+                            Name = "CARTAGENA DE INDIAS",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 151,
+                            Code1 = "13006",
+                            IsActive = false,
+                            Name = "ACHÍ",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 152,
+                            Code1 = "13030",
+                            IsActive = false,
+                            Name = "ALTOS DEL ROSARIO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 153,
+                            Code1 = "13042",
+                            IsActive = false,
+                            Name = "ARENAL",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 154,
+                            Code1 = "13052",
+                            IsActive = false,
+                            Name = "ARJONA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 155,
+                            Code1 = "13062",
+                            IsActive = false,
+                            Name = "ARROYOHONDO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 156,
+                            Code1 = "13074",
+                            IsActive = false,
+                            Name = "BARRANCO DE LOBA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 157,
+                            Code1 = "13140",
+                            IsActive = false,
+                            Name = "CALAMAR",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 158,
+                            Code1 = "13160",
+                            IsActive = false,
+                            Name = "CANTAGALLO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 159,
+                            Code1 = "13188",
+                            IsActive = false,
+                            Name = "CICUCO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 160,
+                            Code1 = "13212",
+                            IsActive = false,
+                            Name = "CÓRDOBA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 161,
+                            Code1 = "13222",
+                            IsActive = false,
+                            Name = "CLEMENCIA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 162,
+                            Code1 = "13244",
+                            IsActive = false,
+                            Name = "EL CARMEN DE BOLÍVAR",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 163,
+                            Code1 = "13248",
+                            IsActive = false,
+                            Name = "EL GUAMO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 164,
+                            Code1 = "13268",
+                            IsActive = false,
+                            Name = "EL PEÑÓN",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 165,
+                            Code1 = "13300",
+                            IsActive = false,
+                            Name = "HATILLO DE LOBA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 166,
+                            Code1 = "13430",
+                            IsActive = false,
+                            Name = "MAGANGUÉ",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 167,
+                            Code1 = "13433",
+                            IsActive = false,
+                            Name = "MAHATES",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 168,
+                            Code1 = "13440",
+                            IsActive = false,
+                            Name = "MARGARITA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 169,
+                            Code1 = "13442",
+                            IsActive = false,
+                            Name = "MARÍA LA BAJA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 170,
+                            Code1 = "13458",
+                            IsActive = false,
+                            Name = "MONTECRISTO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 171,
+                            Code1 = "13468",
+                            IsActive = false,
+                            Name = "SANTA CRUZ DE MOMPOX",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 172,
+                            Code1 = "13473",
+                            IsActive = false,
+                            Name = "MORALES",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 173,
+                            Code1 = "13490",
+                            IsActive = false,
+                            Name = "NOROSÍ",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 174,
+                            Code1 = "13549",
+                            IsActive = false,
+                            Name = "PINILLOS",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 175,
+                            Code1 = "13580",
+                            IsActive = false,
+                            Name = "REGIDOR",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 176,
+                            Code1 = "13600",
+                            IsActive = false,
+                            Name = "RÍO VIEJO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 177,
+                            Code1 = "13620",
+                            IsActive = false,
+                            Name = "SAN CRISTÓBAL",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 178,
+                            Code1 = "13647",
+                            IsActive = false,
+                            Name = "SAN ESTANISLAO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 179,
+                            Code1 = "13650",
+                            IsActive = false,
+                            Name = "SAN FERNANDO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 180,
+                            Code1 = "13654",
+                            IsActive = false,
+                            Name = "SAN JACINTO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 181,
+                            Code1 = "13655",
+                            IsActive = false,
+                            Name = "SAN JACINTO DEL CAUCA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 182,
+                            Code1 = "13657",
+                            IsActive = false,
+                            Name = "SAN JUAN NEPOMUCENO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 183,
+                            Code1 = "13667",
+                            IsActive = false,
+                            Name = "SAN MARTÍN DE LOBA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 184,
+                            Code1 = "13670",
+                            IsActive = false,
+                            Name = "SAN PABLO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 185,
+                            Code1 = "13673",
+                            IsActive = false,
+                            Name = "SANTA CATALINA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 186,
+                            Code1 = "13683",
+                            IsActive = false,
+                            Name = "SANTA ROSA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 187,
+                            Code1 = "13688",
+                            IsActive = false,
+                            Name = "SANTA ROSA DEL SUR",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 188,
+                            Code1 = "13744",
+                            IsActive = false,
+                            Name = "SIMITÍ",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 189,
+                            Code1 = "13760",
+                            IsActive = false,
+                            Name = "SOPLAVIENTO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 190,
+                            Code1 = "13780",
+                            IsActive = false,
+                            Name = "TALAIGUA NUEVO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 191,
+                            Code1 = "13810",
+                            IsActive = false,
+                            Name = "TIQUISIO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 192,
+                            Code1 = "13836",
+                            IsActive = false,
+                            Name = "TURBACO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 193,
+                            Code1 = "13838",
+                            IsActive = false,
+                            Name = "TURBANÁ",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 194,
+                            Code1 = "13873",
+                            IsActive = false,
+                            Name = "VILLANUEVA",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 195,
+                            Code1 = "13894",
+                            IsActive = false,
+                            Name = "ZAMBRANO",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            CityId = 196,
+                            Code1 = "15001",
+                            IsActive = false,
+                            Name = "TUNJA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 197,
+                            Code1 = "15022",
+                            IsActive = false,
+                            Name = "ALMEIDA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 198,
+                            Code1 = "15047",
+                            IsActive = false,
+                            Name = "AQUITANIA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 199,
+                            Code1 = "15051",
+                            IsActive = false,
+                            Name = "ARCABUCO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 200,
+                            Code1 = "15087",
+                            IsActive = false,
+                            Name = "BELÉN",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 201,
+                            Code1 = "15090",
+                            IsActive = false,
+                            Name = "BERBEO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 202,
+                            Code1 = "15092",
+                            IsActive = false,
+                            Name = "BETÉITIVA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 203,
+                            Code1 = "15097",
+                            IsActive = false,
+                            Name = "BOAVITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 204,
+                            Code1 = "15104",
+                            IsActive = false,
+                            Name = "BOYACÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 205,
+                            Code1 = "15106",
+                            IsActive = false,
+                            Name = "BRICEÑO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 206,
+                            Code1 = "15109",
+                            IsActive = false,
+                            Name = "BUENAVISTA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 207,
+                            Code1 = "15114",
+                            IsActive = false,
+                            Name = "BUSBANZÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 208,
+                            Code1 = "15131",
+                            IsActive = false,
+                            Name = "CALDAS",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 209,
+                            Code1 = "15135",
+                            IsActive = false,
+                            Name = "CAMPOHERMOSO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 210,
+                            Code1 = "15162",
+                            IsActive = false,
+                            Name = "CERINZA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 211,
+                            Code1 = "15172",
+                            IsActive = false,
+                            Name = "CHINAVITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 212,
+                            Code1 = "15176",
+                            IsActive = false,
+                            Name = "CHIQUINQUIRÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 213,
+                            Code1 = "15180",
+                            IsActive = false,
+                            Name = "CHISCAS",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 214,
+                            Code1 = "15183",
+                            IsActive = false,
+                            Name = "CHITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 215,
+                            Code1 = "15185",
+                            IsActive = false,
+                            Name = "CHITARAQUE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 216,
+                            Code1 = "15187",
+                            IsActive = false,
+                            Name = "CHIVATÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 217,
+                            Code1 = "15189",
+                            IsActive = false,
+                            Name = "CIÉNEGA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 218,
+                            Code1 = "15204",
+                            IsActive = false,
+                            Name = "CÓMBITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 219,
+                            Code1 = "15212",
+                            IsActive = false,
+                            Name = "COPER",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 220,
+                            Code1 = "15215",
+                            IsActive = false,
+                            Name = "CORRALES",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 221,
+                            Code1 = "15218",
+                            IsActive = false,
+                            Name = "COVARACHÍA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 222,
+                            Code1 = "15223",
+                            IsActive = false,
+                            Name = "CUBARÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 223,
+                            Code1 = "15224",
+                            IsActive = false,
+                            Name = "CUCAITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 224,
+                            Code1 = "15226",
+                            IsActive = false,
+                            Name = "CUÍTIVA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 225,
+                            Code1 = "15232",
+                            IsActive = false,
+                            Name = "CHÍQUIZA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 226,
+                            Code1 = "15236",
+                            IsActive = false,
+                            Name = "CHIVOR",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 227,
+                            Code1 = "15238",
+                            IsActive = false,
+                            Name = "DUITAMA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 228,
+                            Code1 = "15244",
+                            IsActive = false,
+                            Name = "EL COCUY",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 229,
+                            Code1 = "15248",
+                            IsActive = false,
+                            Name = "EL ESPINO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 230,
+                            Code1 = "15272",
+                            IsActive = false,
+                            Name = "FIRAVITOBA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 231,
+                            Code1 = "15276",
+                            IsActive = false,
+                            Name = "FLORESTA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 232,
+                            Code1 = "15293",
+                            IsActive = false,
+                            Name = "GACHANTIVÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 233,
+                            Code1 = "15296",
+                            IsActive = false,
+                            Name = "GÁMEZA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 234,
+                            Code1 = "15299",
+                            IsActive = false,
+                            Name = "GARAGOA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 235,
+                            Code1 = "15317",
+                            IsActive = false,
+                            Name = "GUACAMAYAS",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 236,
+                            Code1 = "15322",
+                            IsActive = false,
+                            Name = "GUATEQUE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 237,
+                            Code1 = "15325",
+                            IsActive = false,
+                            Name = "GUAYATÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 238,
+                            Code1 = "15332",
+                            IsActive = false,
+                            Name = "GÜICÁN DE LA SIERRA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 239,
+                            Code1 = "15362",
+                            IsActive = false,
+                            Name = "IZA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 240,
+                            Code1 = "15367",
+                            IsActive = false,
+                            Name = "JENESANO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 241,
+                            Code1 = "15368",
+                            IsActive = false,
+                            Name = "JERICÓ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 242,
+                            Code1 = "15377",
+                            IsActive = false,
+                            Name = "LABRANZAGRANDE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 243,
+                            Code1 = "15380",
+                            IsActive = false,
+                            Name = "LA CAPILLA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 244,
+                            Code1 = "15401",
+                            IsActive = false,
+                            Name = "LA VICTORIA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 245,
+                            Code1 = "15403",
+                            IsActive = false,
+                            Name = "LA UVITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 246,
+                            Code1 = "15407",
+                            IsActive = false,
+                            Name = "VILLA DE LEYVA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 247,
+                            Code1 = "15425",
+                            IsActive = false,
+                            Name = "MACANAL",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 248,
+                            Code1 = "15442",
+                            IsActive = false,
+                            Name = "MARIPÍ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 249,
+                            Code1 = "15455",
+                            IsActive = false,
+                            Name = "MIRAFLORES",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 250,
+                            Code1 = "15464",
+                            IsActive = false,
+                            Name = "MONGUA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 251,
+                            Code1 = "15466",
+                            IsActive = false,
+                            Name = "MONGUÍ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 252,
+                            Code1 = "15469",
+                            IsActive = false,
+                            Name = "MONIQUIRÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 253,
+                            Code1 = "15476",
+                            IsActive = false,
+                            Name = "MOTAVITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 254,
+                            Code1 = "15480",
+                            IsActive = false,
+                            Name = "MUZO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 255,
+                            Code1 = "15491",
+                            IsActive = false,
+                            Name = "NOBSA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 256,
+                            Code1 = "15494",
+                            IsActive = false,
+                            Name = "NUEVO COLÓN",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 257,
+                            Code1 = "15500",
+                            IsActive = false,
+                            Name = "OICATÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 258,
+                            Code1 = "15507",
+                            IsActive = false,
+                            Name = "OTANCHE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 259,
+                            Code1 = "15511",
+                            IsActive = false,
+                            Name = "PACHAVITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 260,
+                            Code1 = "15514",
+                            IsActive = false,
+                            Name = "PÁEZ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 261,
+                            Code1 = "15516",
+                            IsActive = false,
+                            Name = "PAIPA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 262,
+                            Code1 = "15518",
+                            IsActive = false,
+                            Name = "PAJARITO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 263,
+                            Code1 = "15522",
+                            IsActive = false,
+                            Name = "PANQUEBA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 264,
+                            Code1 = "15531",
+                            IsActive = false,
+                            Name = "PAUNA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 265,
+                            Code1 = "15533",
+                            IsActive = false,
+                            Name = "PAYA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 266,
+                            Code1 = "15537",
+                            IsActive = false,
+                            Name = "PAZ DE RÍO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 267,
+                            Code1 = "15542",
+                            IsActive = false,
+                            Name = "PESCA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 268,
+                            Code1 = "15550",
+                            IsActive = false,
+                            Name = "PISBA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 269,
+                            Code1 = "15572",
+                            IsActive = false,
+                            Name = "PUERTO BOYACÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 270,
+                            Code1 = "15580",
+                            IsActive = false,
+                            Name = "QUÍPAMA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 271,
+                            Code1 = "15599",
+                            IsActive = false,
+                            Name = "RAMIRIQUÍ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 272,
+                            Code1 = "15600",
+                            IsActive = false,
+                            Name = "RÁQUIRA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 273,
+                            Code1 = "15621",
+                            IsActive = false,
+                            Name = "RONDÓN",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 274,
+                            Code1 = "15632",
+                            IsActive = false,
+                            Name = "SABOYÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 275,
+                            Code1 = "15638",
+                            IsActive = false,
+                            Name = "SÁCHICA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 276,
+                            Code1 = "15646",
+                            IsActive = false,
+                            Name = "SAMACÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 277,
+                            Code1 = "15660",
+                            IsActive = false,
+                            Name = "SAN EDUARDO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 278,
+                            Code1 = "15664",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DE PARE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 279,
+                            Code1 = "15667",
+                            IsActive = false,
+                            Name = "SAN LUIS DE GACENO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 280,
+                            Code1 = "15673",
+                            IsActive = false,
+                            Name = "SAN MATEO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 281,
+                            Code1 = "15676",
+                            IsActive = false,
+                            Name = "SAN MIGUEL DE SEMA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 282,
+                            Code1 = "15681",
+                            IsActive = false,
+                            Name = "SAN PABLO DE BORBUR",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 283,
+                            Code1 = "15686",
+                            IsActive = false,
+                            Name = "SANTANA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 284,
+                            Code1 = "15690",
+                            IsActive = false,
+                            Name = "SANTA MARÍA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 285,
+                            Code1 = "15693",
+                            IsActive = false,
+                            Name = "SANTA ROSA DE VITERBO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 286,
+                            Code1 = "15696",
+                            IsActive = false,
+                            Name = "SANTA SOFÍA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 287,
+                            Code1 = "15720",
+                            IsActive = false,
+                            Name = "SATIVANORTE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 288,
+                            Code1 = "15723",
+                            IsActive = false,
+                            Name = "SATIVASUR",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 289,
+                            Code1 = "15740",
+                            IsActive = false,
+                            Name = "SIACHOQUE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 290,
+                            Code1 = "15753",
+                            IsActive = false,
+                            Name = "SOATÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 291,
+                            Code1 = "15755",
+                            IsActive = false,
+                            Name = "SOCOTÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 292,
+                            Code1 = "15757",
+                            IsActive = false,
+                            Name = "SOCHA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 293,
+                            Code1 = "15759",
+                            IsActive = false,
+                            Name = "SOGAMOSO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 294,
+                            Code1 = "15761",
+                            IsActive = false,
+                            Name = "SOMONDOCO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 295,
+                            Code1 = "15762",
+                            IsActive = false,
+                            Name = "SORA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 296,
+                            Code1 = "15763",
+                            IsActive = false,
+                            Name = "SOTAQUIRÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 297,
+                            Code1 = "15764",
+                            IsActive = false,
+                            Name = "SORACÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 298,
+                            Code1 = "15774",
+                            IsActive = false,
+                            Name = "SUSACÓN",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 299,
+                            Code1 = "15776",
+                            IsActive = false,
+                            Name = "SUTAMARCHÁN",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 300,
+                            Code1 = "15778",
+                            IsActive = false,
+                            Name = "SUTATENZA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 301,
+                            Code1 = "15790",
+                            IsActive = false,
+                            Name = "TASCO",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 302,
+                            Code1 = "15798",
+                            IsActive = false,
+                            Name = "TENZA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 303,
+                            Code1 = "15804",
+                            IsActive = false,
+                            Name = "TIBANÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 304,
+                            Code1 = "15806",
+                            IsActive = false,
+                            Name = "TIBASOSA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 305,
+                            Code1 = "15808",
+                            IsActive = false,
+                            Name = "TINJACÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 306,
+                            Code1 = "15810",
+                            IsActive = false,
+                            Name = "TIPACOQUE",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 307,
+                            Code1 = "15814",
+                            IsActive = false,
+                            Name = "TOCA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 308,
+                            Code1 = "15816",
+                            IsActive = false,
+                            Name = "TOGÜÍ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 309,
+                            Code1 = "15820",
+                            IsActive = false,
+                            Name = "TÓPAGA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 310,
+                            Code1 = "15822",
+                            IsActive = false,
+                            Name = "TOTA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 311,
+                            Code1 = "15832",
+                            IsActive = false,
+                            Name = "TUNUNGUÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 312,
+                            Code1 = "15835",
+                            IsActive = false,
+                            Name = "TURMEQUÉ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 313,
+                            Code1 = "15837",
+                            IsActive = false,
+                            Name = "TUTA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 314,
+                            Code1 = "15839",
+                            IsActive = false,
+                            Name = "TUTAZÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 315,
+                            Code1 = "15842",
+                            IsActive = false,
+                            Name = "ÚMBITA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 316,
+                            Code1 = "15861",
+                            IsActive = false,
+                            Name = "VENTAQUEMADA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 317,
+                            Code1 = "15879",
+                            IsActive = false,
+                            Name = "VIRACACHÁ",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 318,
+                            Code1 = "15897",
+                            IsActive = false,
+                            Name = "ZETAQUIRA",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            CityId = 319,
+                            Code1 = "17001",
+                            IsActive = false,
+                            Name = "MANIZALES",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 320,
+                            Code1 = "17013",
+                            IsActive = false,
+                            Name = "AGUADAS",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 321,
+                            Code1 = "17042",
+                            IsActive = false,
+                            Name = "ANSERMA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 322,
+                            Code1 = "17050",
+                            IsActive = false,
+                            Name = "ARANZAZU",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 323,
+                            Code1 = "17088",
+                            IsActive = false,
+                            Name = "BELALCÁZAR",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 324,
+                            Code1 = "17174",
+                            IsActive = false,
+                            Name = "CHINCHINÁ",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 325,
+                            Code1 = "17272",
+                            IsActive = false,
+                            Name = "FILADELFIA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 326,
+                            Code1 = "17380",
+                            IsActive = false,
+                            Name = "LA DORADA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 327,
+                            Code1 = "17388",
+                            IsActive = false,
+                            Name = "LA MERCED",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 328,
+                            Code1 = "17433",
+                            IsActive = false,
+                            Name = "MANZANARES",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 329,
+                            Code1 = "17442",
+                            IsActive = false,
+                            Name = "MARMATO",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 330,
+                            Code1 = "17444",
+                            IsActive = false,
+                            Name = "MARQUETALIA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 331,
+                            Code1 = "17446",
+                            IsActive = false,
+                            Name = "MARULANDA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 332,
+                            Code1 = "17486",
+                            IsActive = false,
+                            Name = "NEIRA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 333,
+                            Code1 = "17495",
+                            IsActive = false,
+                            Name = "NORCASIA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 334,
+                            Code1 = "17513",
+                            IsActive = false,
+                            Name = "PÁCORA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 335,
+                            Code1 = "17524",
+                            IsActive = false,
+                            Name = "PALESTINA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 336,
+                            Code1 = "17541",
+                            IsActive = false,
+                            Name = "PENSILVANIA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 337,
+                            Code1 = "17614",
+                            IsActive = false,
+                            Name = "RIOSUCIO",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 338,
+                            Code1 = "17616",
+                            IsActive = false,
+                            Name = "RISARALDA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 339,
+                            Code1 = "17653",
+                            IsActive = false,
+                            Name = "SALAMINA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 340,
+                            Code1 = "17662",
+                            IsActive = false,
+                            Name = "SAMANÁ",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 341,
+                            Code1 = "17665",
+                            IsActive = false,
+                            Name = "SAN JOSÉ",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 342,
+                            Code1 = "17777",
+                            IsActive = false,
+                            Name = "SUPÍA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 343,
+                            Code1 = "17867",
+                            IsActive = false,
+                            Name = "VICTORIA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 344,
+                            Code1 = "17873",
+                            IsActive = false,
+                            Name = "VILLAMARÍA",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 345,
+                            Code1 = "17877",
+                            IsActive = false,
+                            Name = "VITERBO",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            CityId = 346,
+                            Code1 = "18001",
+                            IsActive = false,
+                            Name = "FLORENCIA",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 347,
+                            Code1 = "18029",
+                            IsActive = false,
+                            Name = "ALBANIA",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 348,
+                            Code1 = "18094",
+                            IsActive = false,
+                            Name = "BELÉN DE LOS ANDAQUÍES",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 349,
+                            Code1 = "18150",
+                            IsActive = false,
+                            Name = "CARTAGENA DEL CHAIRÁ",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 350,
+                            Code1 = "18205",
+                            IsActive = false,
+                            Name = "CURILLO",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 351,
+                            Code1 = "18247",
+                            IsActive = false,
+                            Name = "EL DONCELLO",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 352,
+                            Code1 = "18256",
+                            IsActive = false,
+                            Name = "EL PAUJÍL",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 353,
+                            Code1 = "18410",
+                            IsActive = false,
+                            Name = "LA MONTAÑITA",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 354,
+                            Code1 = "18460",
+                            IsActive = false,
+                            Name = "MILÁN",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 355,
+                            Code1 = "18479",
+                            IsActive = false,
+                            Name = "MORELIA",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 356,
+                            Code1 = "18592",
+                            IsActive = false,
+                            Name = "PUERTO RICO",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 357,
+                            Code1 = "18610",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DEL FRAGUA",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 358,
+                            Code1 = "18753",
+                            IsActive = false,
+                            Name = "SAN VICENTE DEL CAGUÁN",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 359,
+                            Code1 = "18756",
+                            IsActive = false,
+                            Name = "SOLANO",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 360,
+                            Code1 = "18785",
+                            IsActive = false,
+                            Name = "SOLITA",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 361,
+                            Code1 = "18860",
+                            IsActive = false,
+                            Name = "VALPARAÍSO",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            CityId = 362,
+                            Code1 = "19001",
+                            IsActive = false,
+                            Name = "POPAYÁN",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 363,
+                            Code1 = "19022",
+                            IsActive = false,
+                            Name = "ALMAGUER",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 364,
+                            Code1 = "19050",
+                            IsActive = false,
+                            Name = "ARGELIA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 365,
+                            Code1 = "19075",
+                            IsActive = false,
+                            Name = "BALBOA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 366,
+                            Code1 = "19100",
+                            IsActive = false,
+                            Name = "BOLÍVAR",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 367,
+                            Code1 = "19110",
+                            IsActive = false,
+                            Name = "BUENOS AIRES",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 368,
+                            Code1 = "19130",
+                            IsActive = false,
+                            Name = "CAJIBÍO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 369,
+                            Code1 = "19137",
+                            IsActive = false,
+                            Name = "CALDONO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 370,
+                            Code1 = "19142",
+                            IsActive = false,
+                            Name = "CALOTO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 371,
+                            Code1 = "19212",
+                            IsActive = false,
+                            Name = "CORINTO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 372,
+                            Code1 = "19256",
+                            IsActive = false,
+                            Name = "EL TAMBO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 373,
+                            Code1 = "19290",
+                            IsActive = false,
+                            Name = "FLORENCIA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 374,
+                            Code1 = "19300",
+                            IsActive = false,
+                            Name = "GUACHENÉ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 375,
+                            Code1 = "19318",
+                            IsActive = false,
+                            Name = "GUAPI",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 376,
+                            Code1 = "19355",
+                            IsActive = false,
+                            Name = "INZÁ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 377,
+                            Code1 = "19364",
+                            IsActive = false,
+                            Name = "JAMBALÓ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 378,
+                            Code1 = "19392",
+                            IsActive = false,
+                            Name = "LA SIERRA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 379,
+                            Code1 = "19397",
+                            IsActive = false,
+                            Name = "LA VEGA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 380,
+                            Code1 = "19418",
+                            IsActive = false,
+                            Name = "LÓPEZ DE MICAY",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 381,
+                            Code1 = "19450",
+                            IsActive = false,
+                            Name = "MERCADERES",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 382,
+                            Code1 = "19455",
+                            IsActive = false,
+                            Name = "MIRANDA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 383,
+                            Code1 = "19473",
+                            IsActive = false,
+                            Name = "MORALES",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 384,
+                            Code1 = "19513",
+                            IsActive = false,
+                            Name = "PADILLA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 385,
+                            Code1 = "19517",
+                            IsActive = false,
+                            Name = "PÁEZ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 386,
+                            Code1 = "19532",
+                            IsActive = false,
+                            Name = "PATÍA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 387,
+                            Code1 = "19533",
+                            IsActive = false,
+                            Name = "PIAMONTE",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 388,
+                            Code1 = "19548",
+                            IsActive = false,
+                            Name = "PIENDAMÓ - TUNÍA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 389,
+                            Code1 = "19573",
+                            IsActive = false,
+                            Name = "PUERTO TEJADA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 390,
+                            Code1 = "19585",
+                            IsActive = false,
+                            Name = "PURACÉ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 391,
+                            Code1 = "19622",
+                            IsActive = false,
+                            Name = "ROSAS",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 392,
+                            Code1 = "19693",
+                            IsActive = false,
+                            Name = "SAN SEBASTIÁN",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 393,
+                            Code1 = "19698",
+                            IsActive = false,
+                            Name = "SANTANDER DE QUILICHAO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 394,
+                            Code1 = "19701",
+                            IsActive = false,
+                            Name = "SANTA ROSA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 395,
+                            Code1 = "19743",
+                            IsActive = false,
+                            Name = "SILVIA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 396,
+                            Code1 = "19760",
+                            IsActive = false,
+                            Name = "SOTARÁ - PAISPAMBA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 397,
+                            Code1 = "19780",
+                            IsActive = false,
+                            Name = "SUÁREZ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 398,
+                            Code1 = "19785",
+                            IsActive = false,
+                            Name = "SUCRE",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 399,
+                            Code1 = "19807",
+                            IsActive = false,
+                            Name = "TIMBÍO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 400,
+                            Code1 = "19809",
+                            IsActive = false,
+                            Name = "TIMBIQUÍ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 401,
+                            Code1 = "19821",
+                            IsActive = false,
+                            Name = "TORIBÍO",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 402,
+                            Code1 = "19824",
+                            IsActive = false,
+                            Name = "TOTORÓ",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 403,
+                            Code1 = "19845",
+                            IsActive = false,
+                            Name = "VILLA RICA",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            CityId = 404,
+                            Code1 = "20001",
+                            IsActive = false,
+                            Name = "VALLEDUPAR",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 405,
+                            Code1 = "20011",
+                            IsActive = false,
+                            Name = "AGUACHICA",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 406,
+                            Code1 = "20013",
+                            IsActive = false,
+                            Name = "AGUSTÍN CODAZZI",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 407,
+                            Code1 = "20032",
+                            IsActive = false,
+                            Name = "ASTREA",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 408,
+                            Code1 = "20045",
+                            IsActive = false,
+                            Name = "BECERRIL",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 409,
+                            Code1 = "20060",
+                            IsActive = false,
+                            Name = "BOSCONIA",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 410,
+                            Code1 = "20175",
+                            IsActive = false,
+                            Name = "CHIMICHAGUA",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 411,
+                            Code1 = "20178",
+                            IsActive = false,
+                            Name = "CHIRIGUANÁ",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 412,
+                            Code1 = "20228",
+                            IsActive = false,
+                            Name = "CURUMANÍ",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 413,
+                            Code1 = "20238",
+                            IsActive = false,
+                            Name = "EL COPEY",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 414,
+                            Code1 = "20250",
+                            IsActive = false,
+                            Name = "EL PASO",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 415,
+                            Code1 = "20295",
+                            IsActive = false,
+                            Name = "GAMARRA",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 416,
+                            Code1 = "20310",
+                            IsActive = false,
+                            Name = "GONZÁLEZ",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 417,
+                            Code1 = "20383",
+                            IsActive = false,
+                            Name = "LA GLORIA",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 418,
+                            Code1 = "20400",
+                            IsActive = false,
+                            Name = "LA JAGUA DE IBIRICO",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 419,
+                            Code1 = "20443",
+                            IsActive = false,
+                            Name = "MANAURE BALCÓN DEL CESAR",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 420,
+                            Code1 = "20517",
+                            IsActive = false,
+                            Name = "PAILITAS",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 421,
+                            Code1 = "20550",
+                            IsActive = false,
+                            Name = "PELAYA",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 422,
+                            Code1 = "20570",
+                            IsActive = false,
+                            Name = "PUEBLO BELLO",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 423,
+                            Code1 = "20614",
+                            IsActive = false,
+                            Name = "RÍO DE ORO",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 424,
+                            Code1 = "20621",
+                            IsActive = false,
+                            Name = "LA PAZ",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 425,
+                            Code1 = "20710",
+                            IsActive = false,
+                            Name = "SAN ALBERTO",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 426,
+                            Code1 = "20750",
+                            IsActive = false,
+                            Name = "SAN DIEGO",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 427,
+                            Code1 = "20770",
+                            IsActive = false,
+                            Name = "SAN MARTÍN",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 428,
+                            Code1 = "20787",
+                            IsActive = false,
+                            Name = "TAMALAMEQUE",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            CityId = 429,
+                            Code1 = "23001",
+                            IsActive = false,
+                            Name = "MONTERÍA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 430,
+                            Code1 = "23068",
+                            IsActive = false,
+                            Name = "AYAPEL",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 431,
+                            Code1 = "23079",
+                            IsActive = false,
+                            Name = "BUENAVISTA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 432,
+                            Code1 = "23090",
+                            IsActive = false,
+                            Name = "CANALETE",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 433,
+                            Code1 = "23162",
+                            IsActive = false,
+                            Name = "CERETÉ",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 434,
+                            Code1 = "23168",
+                            IsActive = false,
+                            Name = "CHIMÁ",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 435,
+                            Code1 = "23182",
+                            IsActive = false,
+                            Name = "CHINÚ",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 436,
+                            Code1 = "23189",
+                            IsActive = false,
+                            Name = "CIÉNAGA DE ORO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 437,
+                            Code1 = "23300",
+                            IsActive = false,
+                            Name = "COTORRA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 438,
+                            Code1 = "23350",
+                            IsActive = false,
+                            Name = "LA APARTADA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 439,
+                            Code1 = "23417",
+                            IsActive = false,
+                            Name = "LORICA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 440,
+                            Code1 = "23419",
+                            IsActive = false,
+                            Name = "LOS CÓRDOBAS",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 441,
+                            Code1 = "23464",
+                            IsActive = false,
+                            Name = "MOMIL",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 442,
+                            Code1 = "23466",
+                            IsActive = false,
+                            Name = "MONTELÍBANO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 443,
+                            Code1 = "23500",
+                            IsActive = false,
+                            Name = "MOÑITOS",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 444,
+                            Code1 = "23555",
+                            IsActive = false,
+                            Name = "PLANETA RICA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 445,
+                            Code1 = "23570",
+                            IsActive = false,
+                            Name = "PUEBLO NUEVO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 446,
+                            Code1 = "23574",
+                            IsActive = false,
+                            Name = "PUERTO ESCONDIDO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 447,
+                            Code1 = "23580",
+                            IsActive = false,
+                            Name = "PUERTO LIBERTADOR",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 448,
+                            Code1 = "23586",
+                            IsActive = false,
+                            Name = "PURÍSIMA DE LA CONCEPCIÓN",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 449,
+                            Code1 = "23660",
+                            IsActive = false,
+                            Name = "SAHAGÚN",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 450,
+                            Code1 = "23670",
+                            IsActive = false,
+                            Name = "SAN ANDRÉS DE SOTAVENTO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 451,
+                            Code1 = "23672",
+                            IsActive = false,
+                            Name = "SAN ANTERO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 452,
+                            Code1 = "23675",
+                            IsActive = false,
+                            Name = "SAN BERNARDO DEL VIENTO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 453,
+                            Code1 = "23678",
+                            IsActive = false,
+                            Name = "SAN CARLOS",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 454,
+                            Code1 = "23682",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DE URÉ",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 455,
+                            Code1 = "23686",
+                            IsActive = false,
+                            Name = "SAN PELAYO",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 456,
+                            Code1 = "23807",
+                            IsActive = false,
+                            Name = "TIERRALTA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 457,
+                            Code1 = "23815",
+                            IsActive = false,
+                            Name = "TUCHÍN",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 458,
+                            Code1 = "23855",
+                            IsActive = false,
+                            Name = "VALENCIA",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            CityId = 459,
+                            Code1 = "25001",
+                            IsActive = false,
+                            Name = "AGUA DE DIOS",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 460,
+                            Code1 = "25019",
+                            IsActive = false,
+                            Name = "ALBÁN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 461,
+                            Code1 = "25035",
+                            IsActive = false,
+                            Name = "ANAPOIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 462,
+                            Code1 = "25040",
+                            IsActive = false,
+                            Name = "ANOLAIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 463,
+                            Code1 = "25053",
+                            IsActive = false,
+                            Name = "ARBELÁEZ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 464,
+                            Code1 = "25086",
+                            IsActive = false,
+                            Name = "BELTRÁN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 465,
+                            Code1 = "25095",
+                            IsActive = false,
+                            Name = "BITUIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 466,
+                            Code1 = "25099",
+                            IsActive = false,
+                            Name = "BOJACÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 467,
+                            Code1 = "25120",
+                            IsActive = false,
+                            Name = "CABRERA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 468,
+                            Code1 = "25123",
+                            IsActive = false,
+                            Name = "CACHIPAY",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 469,
+                            Code1 = "25126",
+                            IsActive = false,
+                            Name = "CAJICÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 470,
+                            Code1 = "25148",
+                            IsActive = false,
+                            Name = "CAPARRAPÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 471,
+                            Code1 = "25151",
+                            IsActive = false,
+                            Name = "CÁQUEZA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 472,
+                            Code1 = "25154",
+                            IsActive = false,
+                            Name = "CARMEN DE CARUPA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 473,
+                            Code1 = "25168",
+                            IsActive = false,
+                            Name = "CHAGUANÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 474,
+                            Code1 = "25175",
+                            IsActive = false,
+                            Name = "CHÍA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 475,
+                            Code1 = "25178",
+                            IsActive = false,
+                            Name = "CHIPAQUE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 476,
+                            Code1 = "25181",
+                            IsActive = false,
+                            Name = "CHOACHÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 477,
+                            Code1 = "25183",
+                            IsActive = false,
+                            Name = "CHOCONTÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 478,
+                            Code1 = "25200",
+                            IsActive = false,
+                            Name = "COGUA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 479,
+                            Code1 = "25214",
+                            IsActive = false,
+                            Name = "COTA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 480,
+                            Code1 = "25224",
+                            IsActive = false,
+                            Name = "CUCUNUBÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 481,
+                            Code1 = "25245",
+                            IsActive = false,
+                            Name = "EL COLEGIO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 482,
+                            Code1 = "25258",
+                            IsActive = false,
+                            Name = "EL PEÑÓN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 483,
+                            Code1 = "25260",
+                            IsActive = false,
+                            Name = "EL ROSAL",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 484,
+                            Code1 = "25269",
+                            IsActive = false,
+                            Name = "FACATATIVÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 485,
+                            Code1 = "25279",
+                            IsActive = false,
+                            Name = "FÓMEQUE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 486,
+                            Code1 = "25281",
+                            IsActive = false,
+                            Name = "FOSCA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 487,
+                            Code1 = "25286",
+                            IsActive = false,
+                            Name = "FUNZA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 488,
+                            Code1 = "25288",
+                            IsActive = false,
+                            Name = "FÚQUENE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 489,
+                            Code1 = "25290",
+                            IsActive = false,
+                            Name = "FUSAGASUGÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 490,
+                            Code1 = "25293",
+                            IsActive = false,
+                            Name = "GACHALÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 491,
+                            Code1 = "25295",
+                            IsActive = false,
+                            Name = "GACHANCIPÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 492,
+                            Code1 = "25297",
+                            IsActive = false,
+                            Name = "GACHETÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 493,
+                            Code1 = "25299",
+                            IsActive = false,
+                            Name = "GAMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 494,
+                            Code1 = "25307",
+                            IsActive = false,
+                            Name = "GIRARDOT",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 495,
+                            Code1 = "25312",
+                            IsActive = false,
+                            Name = "GRANADA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 496,
+                            Code1 = "25317",
+                            IsActive = false,
+                            Name = "GUACHETÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 497,
+                            Code1 = "25320",
+                            IsActive = false,
+                            Name = "GUADUAS",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 498,
+                            Code1 = "25322",
+                            IsActive = false,
+                            Name = "GUASCA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 499,
+                            Code1 = "25324",
+                            IsActive = false,
+                            Name = "GUATAQUÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 500,
+                            Code1 = "25326",
+                            IsActive = false,
+                            Name = "GUATAVITA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 501,
+                            Code1 = "25328",
+                            IsActive = false,
+                            Name = "GUAYABAL DE SÍQUIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 502,
+                            Code1 = "25335",
+                            IsActive = false,
+                            Name = "GUAYABETAL",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 503,
+                            Code1 = "25339",
+                            IsActive = false,
+                            Name = "GUTIÉRREZ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 504,
+                            Code1 = "25368",
+                            IsActive = false,
+                            Name = "JERUSALÉN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 505,
+                            Code1 = "25372",
+                            IsActive = false,
+                            Name = "JUNÍN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 506,
+                            Code1 = "25377",
+                            IsActive = false,
+                            Name = "LA CALERA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 507,
+                            Code1 = "25386",
+                            IsActive = false,
+                            Name = "LA MESA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 508,
+                            Code1 = "25394",
+                            IsActive = false,
+                            Name = "LA PALMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 509,
+                            Code1 = "25398",
+                            IsActive = false,
+                            Name = "LA PEÑA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 510,
+                            Code1 = "25402",
+                            IsActive = false,
+                            Name = "LA VEGA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 511,
+                            Code1 = "25407",
+                            IsActive = false,
+                            Name = "LENGUAZAQUE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 512,
+                            Code1 = "25426",
+                            IsActive = false,
+                            Name = "MACHETÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 513,
+                            Code1 = "25430",
+                            IsActive = false,
+                            Name = "MADRID",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 514,
+                            Code1 = "25436",
+                            IsActive = false,
+                            Name = "MANTA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 515,
+                            Code1 = "25438",
+                            IsActive = false,
+                            Name = "MEDINA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 516,
+                            Code1 = "25473",
+                            IsActive = false,
+                            Name = "MOSQUERA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 517,
+                            Code1 = "25483",
+                            IsActive = false,
+                            Name = "NARIÑO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 518,
+                            Code1 = "25486",
+                            IsActive = false,
+                            Name = "NEMOCÓN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 519,
+                            Code1 = "25488",
+                            IsActive = false,
+                            Name = "NILO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 520,
+                            Code1 = "25489",
+                            IsActive = false,
+                            Name = "NIMAIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 521,
+                            Code1 = "25491",
+                            IsActive = false,
+                            Name = "NOCAIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 522,
+                            Code1 = "25506",
+                            IsActive = false,
+                            Name = "VENECIA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 523,
+                            Code1 = "25513",
+                            IsActive = false,
+                            Name = "PACHO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 524,
+                            Code1 = "25518",
+                            IsActive = false,
+                            Name = "PAIME",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 525,
+                            Code1 = "25524",
+                            IsActive = false,
+                            Name = "PANDI",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 526,
+                            Code1 = "25530",
+                            IsActive = false,
+                            Name = "PARATEBUENO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 527,
+                            Code1 = "25535",
+                            IsActive = false,
+                            Name = "PASCA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 528,
+                            Code1 = "25572",
+                            IsActive = false,
+                            Name = "PUERTO SALGAR",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 529,
+                            Code1 = "25580",
+                            IsActive = false,
+                            Name = "PULÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 530,
+                            Code1 = "25592",
+                            IsActive = false,
+                            Name = "QUEBRADANEGRA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 531,
+                            Code1 = "25594",
+                            IsActive = false,
+                            Name = "QUETAME",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 532,
+                            Code1 = "25596",
+                            IsActive = false,
+                            Name = "QUIPILE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 533,
+                            Code1 = "25599",
+                            IsActive = false,
+                            Name = "APULO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 534,
+                            Code1 = "25612",
+                            IsActive = false,
+                            Name = "RICAURTE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 535,
+                            Code1 = "25645",
+                            IsActive = false,
+                            Name = "SAN ANTONIO DEL TEQUENDAMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 536,
+                            Code1 = "25649",
+                            IsActive = false,
+                            Name = "SAN BERNARDO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 537,
+                            Code1 = "25653",
+                            IsActive = false,
+                            Name = "SAN CAYETANO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 538,
+                            Code1 = "25658",
+                            IsActive = false,
+                            Name = "SAN FRANCISCO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 539,
+                            Code1 = "25662",
+                            IsActive = false,
+                            Name = "SAN JUAN DE RIOSECO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 540,
+                            Code1 = "25718",
+                            IsActive = false,
+                            Name = "SASAIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 541,
+                            Code1 = "25736",
+                            IsActive = false,
+                            Name = "SESQUILÉ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 542,
+                            Code1 = "25740",
+                            IsActive = false,
+                            Name = "SIBATÉ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 543,
+                            Code1 = "25743",
+                            IsActive = false,
+                            Name = "SILVANIA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 544,
+                            Code1 = "25745",
+                            IsActive = false,
+                            Name = "SIMIJACA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 545,
+                            Code1 = "25754",
+                            IsActive = false,
+                            Name = "SOACHA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 546,
+                            Code1 = "25758",
+                            IsActive = false,
+                            Name = "SOPÓ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 547,
+                            Code1 = "25769",
+                            IsActive = false,
+                            Name = "SUBACHOQUE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 548,
+                            Code1 = "25772",
+                            IsActive = false,
+                            Name = "SUESCA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 549,
+                            Code1 = "25777",
+                            IsActive = false,
+                            Name = "SUPATÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 550,
+                            Code1 = "25779",
+                            IsActive = false,
+                            Name = "SUSA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 551,
+                            Code1 = "25781",
+                            IsActive = false,
+                            Name = "SUTATAUSA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 552,
+                            Code1 = "25785",
+                            IsActive = false,
+                            Name = "TABIO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 553,
+                            Code1 = "25793",
+                            IsActive = false,
+                            Name = "TAUSA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 554,
+                            Code1 = "25797",
+                            IsActive = false,
+                            Name = "TENA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 555,
+                            Code1 = "25799",
+                            IsActive = false,
+                            Name = "TENJO",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 556,
+                            Code1 = "25805",
+                            IsActive = false,
+                            Name = "TIBACUY",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 557,
+                            Code1 = "25807",
+                            IsActive = false,
+                            Name = "TIBIRITA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 558,
+                            Code1 = "25815",
+                            IsActive = false,
+                            Name = "TOCAIMA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 559,
+                            Code1 = "25817",
+                            IsActive = false,
+                            Name = "TOCANCIPÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 560,
+                            Code1 = "25823",
+                            IsActive = false,
+                            Name = "TOPAIPÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 561,
+                            Code1 = "25839",
+                            IsActive = false,
+                            Name = "UBALÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 562,
+                            Code1 = "25841",
+                            IsActive = false,
+                            Name = "UBAQUE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 563,
+                            Code1 = "25843",
+                            IsActive = false,
+                            Name = "VILLA DE SAN DIEGO DE UBATÉ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 564,
+                            Code1 = "25845",
+                            IsActive = false,
+                            Name = "UNE",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 565,
+                            Code1 = "25851",
+                            IsActive = false,
+                            Name = "ÚTICA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 566,
+                            Code1 = "25862",
+                            IsActive = false,
+                            Name = "VERGARA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 567,
+                            Code1 = "25867",
+                            IsActive = false,
+                            Name = "VIANÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 568,
+                            Code1 = "25871",
+                            IsActive = false,
+                            Name = "VILLAGÓMEZ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 569,
+                            Code1 = "25873",
+                            IsActive = false,
+                            Name = "VILLAPINZÓN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 570,
+                            Code1 = "25875",
+                            IsActive = false,
+                            Name = "VILLETA",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 571,
+                            Code1 = "25878",
+                            IsActive = false,
+                            Name = "VIOTÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 572,
+                            Code1 = "25885",
+                            IsActive = false,
+                            Name = "YACOPÍ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 573,
+                            Code1 = "25898",
+                            IsActive = false,
+                            Name = "ZIPACÓN",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 574,
+                            Code1 = "25899",
+                            IsActive = false,
+                            Name = "ZIPAQUIRÁ",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            CityId = 575,
+                            Code1 = "27001",
+                            IsActive = false,
+                            Name = "QUIBDÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 576,
+                            Code1 = "27006",
+                            IsActive = false,
+                            Name = "ACANDÍ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 577,
+                            Code1 = "27025",
+                            IsActive = false,
+                            Name = "ALTO BAUDÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 578,
+                            Code1 = "27050",
+                            IsActive = false,
+                            Name = "ATRATO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 579,
+                            Code1 = "27073",
+                            IsActive = false,
+                            Name = "BAGADÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 580,
+                            Code1 = "27075",
+                            IsActive = false,
+                            Name = "BAHÍA SOLANO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 581,
+                            Code1 = "27077",
+                            IsActive = false,
+                            Name = "BAJO BAUDÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 582,
+                            Code1 = "27099",
+                            IsActive = false,
+                            Name = "BOJAYÁ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 583,
+                            Code1 = "27135",
+                            IsActive = false,
+                            Name = "EL CANTÓN DEL SAN PABLO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 584,
+                            Code1 = "27150",
+                            IsActive = false,
+                            Name = "CARMEN DEL DARIÉN",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 585,
+                            Code1 = "27160",
+                            IsActive = false,
+                            Name = "CÉRTEGUI",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 586,
+                            Code1 = "27205",
+                            IsActive = false,
+                            Name = "CONDOTO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 587,
+                            Code1 = "27245",
+                            IsActive = false,
+                            Name = "EL CARMEN DE ATRATO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 588,
+                            Code1 = "27250",
+                            IsActive = false,
+                            Name = "EL LITORAL DEL SAN JUAN",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 589,
+                            Code1 = "27361",
+                            IsActive = false,
+                            Name = "ISTMINA",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 590,
+                            Code1 = "27372",
+                            IsActive = false,
+                            Name = "JURADÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 591,
+                            Code1 = "27413",
+                            IsActive = false,
+                            Name = "LLORÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 592,
+                            Code1 = "27425",
+                            IsActive = false,
+                            Name = "MEDIO ATRATO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 593,
+                            Code1 = "27430",
+                            IsActive = false,
+                            Name = "MEDIO BAUDÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 594,
+                            Code1 = "27450",
+                            IsActive = false,
+                            Name = "MEDIO SAN JUAN",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 595,
+                            Code1 = "27491",
+                            IsActive = false,
+                            Name = "NÓVITA",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 596,
+                            Code1 = "27493",
+                            IsActive = false,
+                            Name = "NUEVO BELÉN DE BAJIRÁ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 597,
+                            Code1 = "27495",
+                            IsActive = false,
+                            Name = "NUQUÍ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 598,
+                            Code1 = "27580",
+                            IsActive = false,
+                            Name = "RÍO IRÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 599,
+                            Code1 = "27600",
+                            IsActive = false,
+                            Name = "RÍO QUITO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 600,
+                            Code1 = "27615",
+                            IsActive = false,
+                            Name = "RIOSUCIO",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 601,
+                            Code1 = "27660",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DEL PALMAR",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 602,
+                            Code1 = "27745",
+                            IsActive = false,
+                            Name = "SIPÍ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 603,
+                            Code1 = "27787",
+                            IsActive = false,
+                            Name = "TADÓ",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 604,
+                            Code1 = "27800",
+                            IsActive = false,
+                            Name = "UNGUÍA",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 605,
+                            Code1 = "27810",
+                            IsActive = false,
+                            Name = "UNIÓN PANAMERICANA",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            CityId = 606,
+                            Code1 = "41001",
+                            IsActive = false,
+                            Name = "NEIVA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 607,
+                            Code1 = "41006",
+                            IsActive = false,
+                            Name = "ACEVEDO",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 608,
+                            Code1 = "41013",
+                            IsActive = false,
+                            Name = "AGRADO",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 609,
+                            Code1 = "41016",
+                            IsActive = false,
+                            Name = "AIPE",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 610,
+                            Code1 = "41020",
+                            IsActive = false,
+                            Name = "ALGECIRAS",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 611,
+                            Code1 = "41026",
+                            IsActive = false,
+                            Name = "ALTAMIRA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 612,
+                            Code1 = "41078",
+                            IsActive = false,
+                            Name = "BARAYA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 613,
+                            Code1 = "41132",
+                            IsActive = false,
+                            Name = "CAMPOALEGRE",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 614,
+                            Code1 = "41206",
+                            IsActive = false,
+                            Name = "COLOMBIA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 615,
+                            Code1 = "41244",
+                            IsActive = false,
+                            Name = "ELÍAS",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 616,
+                            Code1 = "41298",
+                            IsActive = false,
+                            Name = "GARZÓN",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 617,
+                            Code1 = "41306",
+                            IsActive = false,
+                            Name = "GIGANTE",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 618,
+                            Code1 = "41319",
+                            IsActive = false,
+                            Name = "GUADALUPE",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 619,
+                            Code1 = "41349",
+                            IsActive = false,
+                            Name = "HOBO",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 620,
+                            Code1 = "41357",
+                            IsActive = false,
+                            Name = "ÍQUIRA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 621,
+                            Code1 = "41359",
+                            IsActive = false,
+                            Name = "ISNOS",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 622,
+                            Code1 = "41378",
+                            IsActive = false,
+                            Name = "LA ARGENTINA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 623,
+                            Code1 = "41396",
+                            IsActive = false,
+                            Name = "LA PLATA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 624,
+                            Code1 = "41483",
+                            IsActive = false,
+                            Name = "NÁTAGA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 625,
+                            Code1 = "41503",
+                            IsActive = false,
+                            Name = "OPORAPA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 626,
+                            Code1 = "41518",
+                            IsActive = false,
+                            Name = "PAICOL",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 627,
+                            Code1 = "41524",
+                            IsActive = false,
+                            Name = "PALERMO",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 628,
+                            Code1 = "41530",
+                            IsActive = false,
+                            Name = "PALESTINA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 629,
+                            Code1 = "41548",
+                            IsActive = false,
+                            Name = "PITAL",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 630,
+                            Code1 = "41551",
+                            IsActive = false,
+                            Name = "PITALITO",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 631,
+                            Code1 = "41615",
+                            IsActive = false,
+                            Name = "RIVERA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 632,
+                            Code1 = "41660",
+                            IsActive = false,
+                            Name = "SALADOBLANCO",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 633,
+                            Code1 = "41668",
+                            IsActive = false,
+                            Name = "SAN AGUSTÍN",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 634,
+                            Code1 = "41676",
+                            IsActive = false,
+                            Name = "SANTA MARÍA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 635,
+                            Code1 = "41770",
+                            IsActive = false,
+                            Name = "SUAZA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 636,
+                            Code1 = "41791",
+                            IsActive = false,
+                            Name = "TARQUI",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 637,
+                            Code1 = "41797",
+                            IsActive = false,
+                            Name = "TESALIA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 638,
+                            Code1 = "41799",
+                            IsActive = false,
+                            Name = "TELLO",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 639,
+                            Code1 = "41801",
+                            IsActive = false,
+                            Name = "TERUEL",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 640,
+                            Code1 = "41807",
+                            IsActive = false,
+                            Name = "TIMANÁ",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 641,
+                            Code1 = "41872",
+                            IsActive = false,
+                            Name = "VILLAVIEJA",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 642,
+                            Code1 = "41885",
+                            IsActive = false,
+                            Name = "YAGUARÁ",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            CityId = 643,
+                            Code1 = "44001",
+                            IsActive = false,
+                            Name = "RIOHACHA",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 644,
+                            Code1 = "44035",
+                            IsActive = false,
+                            Name = "ALBANIA",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 645,
+                            Code1 = "44078",
+                            IsActive = false,
+                            Name = "BARRANCAS",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 646,
+                            Code1 = "44090",
+                            IsActive = false,
+                            Name = "DIBULLA",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 647,
+                            Code1 = "44098",
+                            IsActive = false,
+                            Name = "DISTRACCIÓN",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 648,
+                            Code1 = "44110",
+                            IsActive = false,
+                            Name = "EL MOLINO",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 649,
+                            Code1 = "44279",
+                            IsActive = false,
+                            Name = "FONSECA",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 650,
+                            Code1 = "44378",
+                            IsActive = false,
+                            Name = "HATONUEVO",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 651,
+                            Code1 = "44420",
+                            IsActive = false,
+                            Name = "LA JAGUA DEL PILAR",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 652,
+                            Code1 = "44430",
+                            IsActive = false,
+                            Name = "MAICAO",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 653,
+                            Code1 = "44560",
+                            IsActive = false,
+                            Name = "MANAURE",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 654,
+                            Code1 = "44650",
+                            IsActive = false,
+                            Name = "SAN JUAN DEL CESAR",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 655,
+                            Code1 = "44847",
+                            IsActive = false,
+                            Name = "URIBIA",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 656,
+                            Code1 = "44855",
+                            IsActive = false,
+                            Name = "URUMITA",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 657,
+                            Code1 = "44874",
+                            IsActive = false,
+                            Name = "VILLANUEVA",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            CityId = 658,
+                            Code1 = "47001",
+                            IsActive = false,
+                            Name = "SANTA MARTA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 659,
+                            Code1 = "47030",
+                            IsActive = false,
+                            Name = "ALGARROBO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 660,
+                            Code1 = "47053",
+                            IsActive = false,
+                            Name = "ARACATACA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 661,
+                            Code1 = "47058",
+                            IsActive = false,
+                            Name = "ARIGUANÍ",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 662,
+                            Code1 = "47161",
+                            IsActive = false,
+                            Name = "CERRO DE SAN ANTONIO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 663,
+                            Code1 = "47170",
+                            IsActive = false,
+                            Name = "CHIVOLO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 664,
+                            Code1 = "47189",
+                            IsActive = false,
+                            Name = "CIÉNAGA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 665,
+                            Code1 = "47205",
+                            IsActive = false,
+                            Name = "CONCORDIA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 666,
+                            Code1 = "47245",
+                            IsActive = false,
+                            Name = "EL BANCO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 667,
+                            Code1 = "47258",
+                            IsActive = false,
+                            Name = "EL PIÑÓN",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 668,
+                            Code1 = "47268",
+                            IsActive = false,
+                            Name = "EL RETÉN",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 669,
+                            Code1 = "47288",
+                            IsActive = false,
+                            Name = "FUNDACIÓN",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 670,
+                            Code1 = "47318",
+                            IsActive = false,
+                            Name = "GUAMAL",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 671,
+                            Code1 = "47460",
+                            IsActive = false,
+                            Name = "NUEVA GRANADA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 672,
+                            Code1 = "47541",
+                            IsActive = false,
+                            Name = "PEDRAZA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 673,
+                            Code1 = "47545",
+                            IsActive = false,
+                            Name = "PIJIÑO DEL CARMEN",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 674,
+                            Code1 = "47551",
+                            IsActive = false,
+                            Name = "PIVIJAY",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 675,
+                            Code1 = "47555",
+                            IsActive = false,
+                            Name = "PLATO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 676,
+                            Code1 = "47570",
+                            IsActive = false,
+                            Name = "PUEBLOVIEJO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 677,
+                            Code1 = "47605",
+                            IsActive = false,
+                            Name = "REMOLINO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 678,
+                            Code1 = "47660",
+                            IsActive = false,
+                            Name = "SABANAS DE SAN ÁNGEL",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 679,
+                            Code1 = "47675",
+                            IsActive = false,
+                            Name = "SALAMINA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 680,
+                            Code1 = "47692",
+                            IsActive = false,
+                            Name = "SAN SEBASTIÁN DE BUENAVISTA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 681,
+                            Code1 = "47703",
+                            IsActive = false,
+                            Name = "SAN ZENÓN",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 682,
+                            Code1 = "47707",
+                            IsActive = false,
+                            Name = "SANTA ANA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 683,
+                            Code1 = "47720",
+                            IsActive = false,
+                            Name = "SANTA BÁRBARA DE PINTO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 684,
+                            Code1 = "47745",
+                            IsActive = false,
+                            Name = "SITIONUEVO",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 685,
+                            Code1 = "47798",
+                            IsActive = false,
+                            Name = "TENERIFE",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 686,
+                            Code1 = "47960",
+                            IsActive = false,
+                            Name = "ZAPAYÁN",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 687,
+                            Code1 = "47980",
+                            IsActive = false,
+                            Name = "ZONA BANANERA",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            CityId = 688,
+                            Code1 = "50001",
+                            IsActive = false,
+                            Name = "VILLAVICENCIO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 689,
+                            Code1 = "50006",
+                            IsActive = false,
+                            Name = "ACACÍAS",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 690,
+                            Code1 = "50110",
+                            IsActive = false,
+                            Name = "BARRANCA DE UPÍA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 691,
+                            Code1 = "50124",
+                            IsActive = false,
+                            Name = "CABUYARO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 692,
+                            Code1 = "50150",
+                            IsActive = false,
+                            Name = "CASTILLA LA NUEVA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 693,
+                            Code1 = "50223",
+                            IsActive = false,
+                            Name = "CUBARRAL",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 694,
+                            Code1 = "50226",
+                            IsActive = false,
+                            Name = "CUMARAL",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 695,
+                            Code1 = "50245",
+                            IsActive = false,
+                            Name = "EL CALVARIO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 696,
+                            Code1 = "50251",
+                            IsActive = false,
+                            Name = "EL CASTILLO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 697,
+                            Code1 = "50270",
+                            IsActive = false,
+                            Name = "EL DORADO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 698,
+                            Code1 = "50287",
+                            IsActive = false,
+                            Name = "FUENTE DE ORO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 699,
+                            Code1 = "50313",
+                            IsActive = false,
+                            Name = "GRANADA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 700,
+                            Code1 = "50318",
+                            IsActive = false,
+                            Name = "GUAMAL",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 701,
+                            Code1 = "50325",
+                            IsActive = false,
+                            Name = "MAPIRIPÁN",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 702,
+                            Code1 = "50330",
+                            IsActive = false,
+                            Name = "MESETAS",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 703,
+                            Code1 = "50350",
+                            IsActive = false,
+                            Name = "LA MACARENA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 704,
+                            Code1 = "50370",
+                            IsActive = false,
+                            Name = "URIBE",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 705,
+                            Code1 = "50400",
+                            IsActive = false,
+                            Name = "LEJANÍAS",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 706,
+                            Code1 = "50450",
+                            IsActive = false,
+                            Name = "PUERTO CONCORDIA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 707,
+                            Code1 = "50568",
+                            IsActive = false,
+                            Name = "PUERTO GAITÁN",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 708,
+                            Code1 = "50573",
+                            IsActive = false,
+                            Name = "PUERTO LÓPEZ",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 709,
+                            Code1 = "50577",
+                            IsActive = false,
+                            Name = "PUERTO LLERAS",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 710,
+                            Code1 = "50590",
+                            IsActive = false,
+                            Name = "PUERTO RICO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 711,
+                            Code1 = "50606",
+                            IsActive = false,
+                            Name = "RESTREPO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 712,
+                            Code1 = "50680",
+                            IsActive = false,
+                            Name = "SAN CARLOS DE GUAROA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 713,
+                            Code1 = "50683",
+                            IsActive = false,
+                            Name = "SAN JUAN DE ARAMA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 714,
+                            Code1 = "50686",
+                            IsActive = false,
+                            Name = "SAN JUANITO",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 715,
+                            Code1 = "50689",
+                            IsActive = false,
+                            Name = "SAN MARTÍN",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 716,
+                            Code1 = "50711",
+                            IsActive = false,
+                            Name = "VISTAHERMOSA",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            CityId = 717,
+                            Code1 = "52001",
+                            IsActive = false,
+                            Name = "PASTO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 718,
+                            Code1 = "52019",
+                            IsActive = false,
+                            Name = "ALBÁN",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 719,
+                            Code1 = "52022",
+                            IsActive = false,
+                            Name = "ALDANA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 720,
+                            Code1 = "52036",
+                            IsActive = false,
+                            Name = "ANCUYA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 721,
+                            Code1 = "52051",
+                            IsActive = false,
+                            Name = "ARBOLEDA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 722,
+                            Code1 = "52079",
+                            IsActive = false,
+                            Name = "BARBACOAS",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 723,
+                            Code1 = "52083",
+                            IsActive = false,
+                            Name = "BELÉN",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 724,
+                            Code1 = "52110",
+                            IsActive = false,
+                            Name = "BUESACO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 725,
+                            Code1 = "52203",
+                            IsActive = false,
+                            Name = "COLÓN",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 726,
+                            Code1 = "52207",
+                            IsActive = false,
+                            Name = "CONSACÁ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 727,
+                            Code1 = "52210",
+                            IsActive = false,
+                            Name = "CONTADERO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 728,
+                            Code1 = "52215",
+                            IsActive = false,
+                            Name = "CÓRDOBA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 729,
+                            Code1 = "52224",
+                            IsActive = false,
+                            Name = "CUASPUD CARLOSAMA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 730,
+                            Code1 = "52227",
+                            IsActive = false,
+                            Name = "CUMBAL",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 731,
+                            Code1 = "52233",
+                            IsActive = false,
+                            Name = "CUMBITARA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 732,
+                            Code1 = "52240",
+                            IsActive = false,
+                            Name = "CHACHAGÜÍ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 733,
+                            Code1 = "52250",
+                            IsActive = false,
+                            Name = "EL CHARCO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 734,
+                            Code1 = "52254",
+                            IsActive = false,
+                            Name = "EL PEÑOL",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 735,
+                            Code1 = "52256",
+                            IsActive = false,
+                            Name = "EL ROSARIO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 736,
+                            Code1 = "52258",
+                            IsActive = false,
+                            Name = "EL TABLÓN DE GÓMEZ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 737,
+                            Code1 = "52260",
+                            IsActive = false,
+                            Name = "EL TAMBO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 738,
+                            Code1 = "52287",
+                            IsActive = false,
+                            Name = "FUNES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 739,
+                            Code1 = "52317",
+                            IsActive = false,
+                            Name = "GUACHUCAL",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 740,
+                            Code1 = "52320",
+                            IsActive = false,
+                            Name = "GUAITARILLA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 741,
+                            Code1 = "52323",
+                            IsActive = false,
+                            Name = "GUALMATÁN",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 742,
+                            Code1 = "52352",
+                            IsActive = false,
+                            Name = "ILES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 743,
+                            Code1 = "52354",
+                            IsActive = false,
+                            Name = "IMUÉS",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 744,
+                            Code1 = "52356",
+                            IsActive = false,
+                            Name = "IPIALES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 745,
+                            Code1 = "52378",
+                            IsActive = false,
+                            Name = "LA CRUZ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 746,
+                            Code1 = "52381",
+                            IsActive = false,
+                            Name = "LA FLORIDA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 747,
+                            Code1 = "52385",
+                            IsActive = false,
+                            Name = "LA LLANADA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 748,
+                            Code1 = "52390",
+                            IsActive = false,
+                            Name = "LA TOLA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 749,
+                            Code1 = "52399",
+                            IsActive = false,
+                            Name = "LA UNIÓN",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 750,
+                            Code1 = "52405",
+                            IsActive = false,
+                            Name = "LEIVA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 751,
+                            Code1 = "52411",
+                            IsActive = false,
+                            Name = "LINARES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 752,
+                            Code1 = "52418",
+                            IsActive = false,
+                            Name = "LOS ANDES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 753,
+                            Code1 = "52427",
+                            IsActive = false,
+                            Name = "MAGÜÍ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 754,
+                            Code1 = "52435",
+                            IsActive = false,
+                            Name = "MALLAMA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 755,
+                            Code1 = "52473",
+                            IsActive = false,
+                            Name = "MOSQUERA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 756,
+                            Code1 = "52480",
+                            IsActive = false,
+                            Name = "NARIÑO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 757,
+                            Code1 = "52490",
+                            IsActive = false,
+                            Name = "OLAYA HERRERA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 758,
+                            Code1 = "52506",
+                            IsActive = false,
+                            Name = "OSPINA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 759,
+                            Code1 = "52520",
+                            IsActive = false,
+                            Name = "FRANCISCO PIZARRO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 760,
+                            Code1 = "52540",
+                            IsActive = false,
+                            Name = "POLICARPA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 761,
+                            Code1 = "52560",
+                            IsActive = false,
+                            Name = "POTOSÍ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 762,
+                            Code1 = "52565",
+                            IsActive = false,
+                            Name = "PROVIDENCIA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 763,
+                            Code1 = "52573",
+                            IsActive = false,
+                            Name = "PUERRES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 764,
+                            Code1 = "52585",
+                            IsActive = false,
+                            Name = "PUPIALES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 765,
+                            Code1 = "52612",
+                            IsActive = false,
+                            Name = "RICAURTE",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 766,
+                            Code1 = "52621",
+                            IsActive = false,
+                            Name = "ROBERTO PAYÁN",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 767,
+                            Code1 = "52678",
+                            IsActive = false,
+                            Name = "SAMANIEGO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 768,
+                            Code1 = "52683",
+                            IsActive = false,
+                            Name = "SANDONÁ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 769,
+                            Code1 = "52685",
+                            IsActive = false,
+                            Name = "SAN BERNARDO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 770,
+                            Code1 = "52687",
+                            IsActive = false,
+                            Name = "SAN LORENZO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 771,
+                            Code1 = "52693",
+                            IsActive = false,
+                            Name = "SAN PABLO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 772,
+                            Code1 = "52694",
+                            IsActive = false,
+                            Name = "SAN PEDRO DE CARTAGO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 773,
+                            Code1 = "52696",
+                            IsActive = false,
+                            Name = "SANTA BÁRBARA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 774,
+                            Code1 = "52699",
+                            IsActive = false,
+                            Name = "SANTACRUZ",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 775,
+                            Code1 = "52720",
+                            IsActive = false,
+                            Name = "SAPUYES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 776,
+                            Code1 = "52786",
+                            IsActive = false,
+                            Name = "TAMINANGO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 777,
+                            Code1 = "52788",
+                            IsActive = false,
+                            Name = "TANGUA",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 778,
+                            Code1 = "52835",
+                            IsActive = false,
+                            Name = "SAN ANDRÉS DE TUMACO",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 779,
+                            Code1 = "52838",
+                            IsActive = false,
+                            Name = "TÚQUERRES",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 780,
+                            Code1 = "52885",
+                            IsActive = false,
+                            Name = "YACUANQUER",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            CityId = 781,
+                            Code1 = "54001",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DE CÚCUTA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 782,
+                            Code1 = "54003",
+                            IsActive = false,
+                            Name = "ÁBREGO",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 783,
+                            Code1 = "54051",
+                            IsActive = false,
+                            Name = "ARBOLEDAS",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 784,
+                            Code1 = "54099",
+                            IsActive = false,
+                            Name = "BOCHALEMA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 785,
+                            Code1 = "54109",
+                            IsActive = false,
+                            Name = "BUCARASICA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 786,
+                            Code1 = "54125",
+                            IsActive = false,
+                            Name = "CÁCOTA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 787,
+                            Code1 = "54128",
+                            IsActive = false,
+                            Name = "CÁCHIRA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 788,
+                            Code1 = "54172",
+                            IsActive = false,
+                            Name = "CHINÁCOTA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 789,
+                            Code1 = "54174",
+                            IsActive = false,
+                            Name = "CHITAGÁ",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 790,
+                            Code1 = "54206",
+                            IsActive = false,
+                            Name = "CONVENCIÓN",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 791,
+                            Code1 = "54223",
+                            IsActive = false,
+                            Name = "CUCUTILLA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 792,
+                            Code1 = "54239",
+                            IsActive = false,
+                            Name = "DURANIA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 793,
+                            Code1 = "54245",
+                            IsActive = false,
+                            Name = "EL CARMEN",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 794,
+                            Code1 = "54250",
+                            IsActive = false,
+                            Name = "EL TARRA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 795,
+                            Code1 = "54261",
+                            IsActive = false,
+                            Name = "EL ZULIA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 796,
+                            Code1 = "54313",
+                            IsActive = false,
+                            Name = "GRAMALOTE",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 797,
+                            Code1 = "54344",
+                            IsActive = false,
+                            Name = "HACARÍ",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 798,
+                            Code1 = "54347",
+                            IsActive = false,
+                            Name = "HERRÁN",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 799,
+                            Code1 = "54377",
+                            IsActive = false,
+                            Name = "LABATECA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 800,
+                            Code1 = "54385",
+                            IsActive = false,
+                            Name = "LA ESPERANZA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 801,
+                            Code1 = "54398",
+                            IsActive = false,
+                            Name = "LA PLAYA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 802,
+                            Code1 = "54405",
+                            IsActive = false,
+                            Name = "LOS PATIOS",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 803,
+                            Code1 = "54418",
+                            IsActive = false,
+                            Name = "LOURDES",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 804,
+                            Code1 = "54480",
+                            IsActive = false,
+                            Name = "MUTISCUA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 805,
+                            Code1 = "54498",
+                            IsActive = false,
+                            Name = "OCAÑA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 806,
+                            Code1 = "54518",
+                            IsActive = false,
+                            Name = "PAMPLONA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 807,
+                            Code1 = "54520",
+                            IsActive = false,
+                            Name = "PAMPLONITA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 808,
+                            Code1 = "54553",
+                            IsActive = false,
+                            Name = "PUERTO SANTANDER",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 809,
+                            Code1 = "54599",
+                            IsActive = false,
+                            Name = "RAGONVALIA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 810,
+                            Code1 = "54660",
+                            IsActive = false,
+                            Name = "SALAZAR",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 811,
+                            Code1 = "54670",
+                            IsActive = false,
+                            Name = "SAN CALIXTO",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 812,
+                            Code1 = "54673",
+                            IsActive = false,
+                            Name = "SAN CAYETANO",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 813,
+                            Code1 = "54680",
+                            IsActive = false,
+                            Name = "SANTIAGO",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 814,
+                            Code1 = "54720",
+                            IsActive = false,
+                            Name = "SARDINATA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 815,
+                            Code1 = "54743",
+                            IsActive = false,
+                            Name = "SILOS",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 816,
+                            Code1 = "54800",
+                            IsActive = false,
+                            Name = "TEORAMA",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 817,
+                            Code1 = "54810",
+                            IsActive = false,
+                            Name = "TIBÚ",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 818,
+                            Code1 = "54820",
+                            IsActive = false,
+                            Name = "TOLEDO",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 819,
+                            Code1 = "54871",
+                            IsActive = false,
+                            Name = "VILLA CARO",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 820,
+                            Code1 = "54874",
+                            IsActive = false,
+                            Name = "VILLA DEL ROSARIO",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            CityId = 821,
+                            Code1 = "63001",
+                            IsActive = false,
+                            Name = "ARMENIA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 822,
+                            Code1 = "63111",
+                            IsActive = false,
+                            Name = "BUENAVISTA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 823,
+                            Code1 = "63130",
+                            IsActive = false,
+                            Name = "CALARCÁ",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 824,
+                            Code1 = "63190",
+                            IsActive = false,
+                            Name = "CIRCASIA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 825,
+                            Code1 = "63212",
+                            IsActive = false,
+                            Name = "CÓRDOBA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 826,
+                            Code1 = "63272",
+                            IsActive = false,
+                            Name = "FILANDIA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 827,
+                            Code1 = "63302",
+                            IsActive = false,
+                            Name = "GÉNOVA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 828,
+                            Code1 = "63401",
+                            IsActive = false,
+                            Name = "LA TEBAIDA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 829,
+                            Code1 = "63470",
+                            IsActive = false,
+                            Name = "MONTENEGRO",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 830,
+                            Code1 = "63548",
+                            IsActive = false,
+                            Name = "PIJAO",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 831,
+                            Code1 = "63594",
+                            IsActive = false,
+                            Name = "QUIMBAYA",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 832,
+                            Code1 = "63690",
+                            IsActive = false,
+                            Name = "SALENTO",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            CityId = 833,
+                            Code1 = "66001",
+                            IsActive = false,
+                            Name = "PEREIRA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 834,
+                            Code1 = "66045",
+                            IsActive = false,
+                            Name = "APÍA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 835,
+                            Code1 = "66075",
+                            IsActive = false,
+                            Name = "BALBOA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 836,
+                            Code1 = "66088",
+                            IsActive = false,
+                            Name = "BELÉN DE UMBRÍA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 837,
+                            Code1 = "66170",
+                            IsActive = false,
+                            Name = "DOSQUEBRADAS",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 838,
+                            Code1 = "66318",
+                            IsActive = false,
+                            Name = "GUÁTICA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 839,
+                            Code1 = "66383",
+                            IsActive = false,
+                            Name = "LA CELIA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 840,
+                            Code1 = "66400",
+                            IsActive = false,
+                            Name = "LA VIRGINIA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 841,
+                            Code1 = "66440",
+                            IsActive = false,
+                            Name = "MARSELLA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 842,
+                            Code1 = "66456",
+                            IsActive = false,
+                            Name = "MISTRATÓ",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 843,
+                            Code1 = "66572",
+                            IsActive = false,
+                            Name = "PUEBLO RICO",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 844,
+                            Code1 = "66594",
+                            IsActive = false,
+                            Name = "QUINCHÍA",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 845,
+                            Code1 = "66682",
+                            IsActive = false,
+                            Name = "SANTA ROSA DE CABAL",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 846,
+                            Code1 = "66687",
+                            IsActive = false,
+                            Name = "SANTUARIO",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            CityId = 847,
+                            Code1 = "68001",
+                            IsActive = false,
+                            Name = "BUCARAMANGA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 848,
+                            Code1 = "68013",
+                            IsActive = false,
+                            Name = "AGUADA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 849,
+                            Code1 = "68020",
+                            IsActive = false,
+                            Name = "ALBANIA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 850,
+                            Code1 = "68051",
+                            IsActive = false,
+                            Name = "ARATOCA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 851,
+                            Code1 = "68077",
+                            IsActive = false,
+                            Name = "BARBOSA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 852,
+                            Code1 = "68079",
+                            IsActive = false,
+                            Name = "BARICHARA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 853,
+                            Code1 = "68081",
+                            IsActive = false,
+                            Name = "BARRANCABERMEJA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 854,
+                            Code1 = "68092",
+                            IsActive = false,
+                            Name = "BETULIA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 855,
+                            Code1 = "68101",
+                            IsActive = false,
+                            Name = "BOLÍVAR",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 856,
+                            Code1 = "68121",
+                            IsActive = false,
+                            Name = "CABRERA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 857,
+                            Code1 = "68132",
+                            IsActive = false,
+                            Name = "CALIFORNIA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 858,
+                            Code1 = "68147",
+                            IsActive = false,
+                            Name = "CAPITANEJO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 859,
+                            Code1 = "68152",
+                            IsActive = false,
+                            Name = "CARCASÍ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 860,
+                            Code1 = "68160",
+                            IsActive = false,
+                            Name = "CEPITÁ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 861,
+                            Code1 = "68162",
+                            IsActive = false,
+                            Name = "CERRITO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 862,
+                            Code1 = "68167",
+                            IsActive = false,
+                            Name = "CHARALÁ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 863,
+                            Code1 = "68169",
+                            IsActive = false,
+                            Name = "CHARTA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 864,
+                            Code1 = "68176",
+                            IsActive = false,
+                            Name = "CHIMA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 865,
+                            Code1 = "68179",
+                            IsActive = false,
+                            Name = "CHIPATÁ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 866,
+                            Code1 = "68190",
+                            IsActive = false,
+                            Name = "CIMITARRA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 867,
+                            Code1 = "68207",
+                            IsActive = false,
+                            Name = "CONCEPCIÓN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 868,
+                            Code1 = "68209",
+                            IsActive = false,
+                            Name = "CONFINES",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 869,
+                            Code1 = "68211",
+                            IsActive = false,
+                            Name = "CONTRATACIÓN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 870,
+                            Code1 = "68217",
+                            IsActive = false,
+                            Name = "COROMORO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 871,
+                            Code1 = "68229",
+                            IsActive = false,
+                            Name = "CURITÍ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 872,
+                            Code1 = "68235",
+                            IsActive = false,
+                            Name = "EL CARMEN DE CHUCURÍ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 873,
+                            Code1 = "68245",
+                            IsActive = false,
+                            Name = "EL GUACAMAYO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 874,
+                            Code1 = "68250",
+                            IsActive = false,
+                            Name = "EL PEÑÓN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 875,
+                            Code1 = "68255",
+                            IsActive = false,
+                            Name = "EL PLAYÓN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 876,
+                            Code1 = "68264",
+                            IsActive = false,
+                            Name = "ENCINO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 877,
+                            Code1 = "68266",
+                            IsActive = false,
+                            Name = "ENCISO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 878,
+                            Code1 = "68271",
+                            IsActive = false,
+                            Name = "FLORIÁN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 879,
+                            Code1 = "68276",
+                            IsActive = false,
+                            Name = "FLORIDABLANCA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 880,
+                            Code1 = "68296",
+                            IsActive = false,
+                            Name = "GALÁN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 881,
+                            Code1 = "68298",
+                            IsActive = false,
+                            Name = "GÁMBITA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 882,
+                            Code1 = "68307",
+                            IsActive = false,
+                            Name = "GIRÓN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 883,
+                            Code1 = "68318",
+                            IsActive = false,
+                            Name = "GUACA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 884,
+                            Code1 = "68320",
+                            IsActive = false,
+                            Name = "GUADALUPE",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 885,
+                            Code1 = "68322",
+                            IsActive = false,
+                            Name = "GUAPOTÁ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 886,
+                            Code1 = "68324",
+                            IsActive = false,
+                            Name = "GUAVATÁ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 887,
+                            Code1 = "68327",
+                            IsActive = false,
+                            Name = "GÜEPSA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 888,
+                            Code1 = "68344",
+                            IsActive = false,
+                            Name = "HATO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 889,
+                            Code1 = "68368",
+                            IsActive = false,
+                            Name = "JESÚS MARÍA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 890,
+                            Code1 = "68370",
+                            IsActive = false,
+                            Name = "JORDÁN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 891,
+                            Code1 = "68377",
+                            IsActive = false,
+                            Name = "LA BELLEZA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 892,
+                            Code1 = "68385",
+                            IsActive = false,
+                            Name = "LANDÁZURI",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 893,
+                            Code1 = "68397",
+                            IsActive = false,
+                            Name = "LA PAZ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 894,
+                            Code1 = "68406",
+                            IsActive = false,
+                            Name = "LEBRIJA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 895,
+                            Code1 = "68418",
+                            IsActive = false,
+                            Name = "LOS SANTOS",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 896,
+                            Code1 = "68425",
+                            IsActive = false,
+                            Name = "MACARAVITA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 897,
+                            Code1 = "68432",
+                            IsActive = false,
+                            Name = "MÁLAGA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 898,
+                            Code1 = "68444",
+                            IsActive = false,
+                            Name = "MATANZA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 899,
+                            Code1 = "68464",
+                            IsActive = false,
+                            Name = "MOGOTES",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 900,
+                            Code1 = "68468",
+                            IsActive = false,
+                            Name = "MOLAGAVITA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 901,
+                            Code1 = "68498",
+                            IsActive = false,
+                            Name = "OCAMONTE",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 902,
+                            Code1 = "68500",
+                            IsActive = false,
+                            Name = "OIBA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 903,
+                            Code1 = "68502",
+                            IsActive = false,
+                            Name = "ONZAGA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 904,
+                            Code1 = "68522",
+                            IsActive = false,
+                            Name = "PALMAR",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 905,
+                            Code1 = "68524",
+                            IsActive = false,
+                            Name = "PALMAS DEL SOCORRO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 906,
+                            Code1 = "68533",
+                            IsActive = false,
+                            Name = "PÁRAMO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 907,
+                            Code1 = "68547",
+                            IsActive = false,
+                            Name = "PIEDECUESTA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 908,
+                            Code1 = "68549",
+                            IsActive = false,
+                            Name = "PINCHOTE",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 909,
+                            Code1 = "68572",
+                            IsActive = false,
+                            Name = "PUENTE NACIONAL",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 910,
+                            Code1 = "68573",
+                            IsActive = false,
+                            Name = "PUERTO PARRA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 911,
+                            Code1 = "68575",
+                            IsActive = false,
+                            Name = "PUERTO WILCHES",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 912,
+                            Code1 = "68615",
+                            IsActive = false,
+                            Name = "RIONEGRO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 913,
+                            Code1 = "68655",
+                            IsActive = false,
+                            Name = "SABANA DE TORRES",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 914,
+                            Code1 = "68669",
+                            IsActive = false,
+                            Name = "SAN ANDRÉS",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 915,
+                            Code1 = "68673",
+                            IsActive = false,
+                            Name = "SAN BENITO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 916,
+                            Code1 = "68679",
+                            IsActive = false,
+                            Name = "SAN GIL",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 917,
+                            Code1 = "68682",
+                            IsActive = false,
+                            Name = "SAN JOAQUÍN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 918,
+                            Code1 = "68684",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DE MIRANDA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 919,
+                            Code1 = "68686",
+                            IsActive = false,
+                            Name = "SAN MIGUEL",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 920,
+                            Code1 = "68689",
+                            IsActive = false,
+                            Name = "SAN VICENTE DE CHUCURÍ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 921,
+                            Code1 = "68705",
+                            IsActive = false,
+                            Name = "SANTA BÁRBARA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 922,
+                            Code1 = "68720",
+                            IsActive = false,
+                            Name = "SANTA HELENA DEL OPÓN",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 923,
+                            Code1 = "68745",
+                            IsActive = false,
+                            Name = "SIMACOTA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 924,
+                            Code1 = "68755",
+                            IsActive = false,
+                            Name = "SOCORRO",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 925,
+                            Code1 = "68770",
+                            IsActive = false,
+                            Name = "SUAITA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 926,
+                            Code1 = "68773",
+                            IsActive = false,
+                            Name = "SUCRE",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 927,
+                            Code1 = "68780",
+                            IsActive = false,
+                            Name = "SURATÁ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 928,
+                            Code1 = "68820",
+                            IsActive = false,
+                            Name = "TONA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 929,
+                            Code1 = "68855",
+                            IsActive = false,
+                            Name = "VALLE DE SAN JOSÉ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 930,
+                            Code1 = "68861",
+                            IsActive = false,
+                            Name = "VÉLEZ",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 931,
+                            Code1 = "68867",
+                            IsActive = false,
+                            Name = "VETAS",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 932,
+                            Code1 = "68872",
+                            IsActive = false,
+                            Name = "VILLANUEVA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 933,
+                            Code1 = "68895",
+                            IsActive = false,
+                            Name = "ZAPATOCA",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            CityId = 934,
+                            Code1 = "70001",
+                            IsActive = false,
+                            Name = "SINCELEJO",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 935,
+                            Code1 = "70110",
+                            IsActive = false,
+                            Name = "BUENAVISTA",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 936,
+                            Code1 = "70124",
+                            IsActive = false,
+                            Name = "CAIMITO",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 937,
+                            Code1 = "70204",
+                            IsActive = false,
+                            Name = "COLOSÓ",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 938,
+                            Code1 = "70215",
+                            IsActive = false,
+                            Name = "COROZAL",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 939,
+                            Code1 = "70221",
+                            IsActive = false,
+                            Name = "COVEÑAS",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 940,
+                            Code1 = "70230",
+                            IsActive = false,
+                            Name = "CHALÁN",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 941,
+                            Code1 = "70233",
+                            IsActive = false,
+                            Name = "EL ROBLE",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 942,
+                            Code1 = "70235",
+                            IsActive = false,
+                            Name = "GALERAS",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 943,
+                            Code1 = "70265",
+                            IsActive = false,
+                            Name = "GUARANDA",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 944,
+                            Code1 = "70400",
+                            IsActive = false,
+                            Name = "LA UNIÓN",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 945,
+                            Code1 = "70418",
+                            IsActive = false,
+                            Name = "LOS PALMITOS",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 946,
+                            Code1 = "70429",
+                            IsActive = false,
+                            Name = "MAJAGUAL",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 947,
+                            Code1 = "70473",
+                            IsActive = false,
+                            Name = "MORROA",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 948,
+                            Code1 = "70508",
+                            IsActive = false,
+                            Name = "OVEJAS",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 949,
+                            Code1 = "70523",
+                            IsActive = false,
+                            Name = "PALMITO",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 950,
+                            Code1 = "70670",
+                            IsActive = false,
+                            Name = "SAMPUÉS",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 951,
+                            Code1 = "70678",
+                            IsActive = false,
+                            Name = "SAN BENITO ABAD",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 952,
+                            Code1 = "70702",
+                            IsActive = false,
+                            Name = "SAN JUAN DE BETULIA",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 953,
+                            Code1 = "70708",
+                            IsActive = false,
+                            Name = "SAN MARCOS",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 954,
+                            Code1 = "70713",
+                            IsActive = false,
+                            Name = "SAN ONOFRE",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 955,
+                            Code1 = "70717",
+                            IsActive = false,
+                            Name = "SAN PEDRO",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 956,
+                            Code1 = "70742",
+                            IsActive = false,
+                            Name = "SAN LUIS DE SINCÉ",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 957,
+                            Code1 = "70771",
+                            IsActive = false,
+                            Name = "SUCRE",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 958,
+                            Code1 = "70820",
+                            IsActive = false,
+                            Name = "SANTIAGO DE TOLÚ",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 959,
+                            Code1 = "70823",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DE TOLUVIEJO",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            CityId = 960,
+                            Code1 = "73001",
+                            IsActive = false,
+                            Name = "IBAGUÉ",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 961,
+                            Code1 = "73024",
+                            IsActive = false,
+                            Name = "ALPUJARRA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 962,
+                            Code1 = "73026",
+                            IsActive = false,
+                            Name = "ALVARADO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 963,
+                            Code1 = "73030",
+                            IsActive = false,
+                            Name = "AMBALEMA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 964,
+                            Code1 = "73043",
+                            IsActive = false,
+                            Name = "ANZOÁTEGUI",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 965,
+                            Code1 = "73055",
+                            IsActive = false,
+                            Name = "ARMERO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 966,
+                            Code1 = "73067",
+                            IsActive = false,
+                            Name = "ATACO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 967,
+                            Code1 = "73124",
+                            IsActive = false,
+                            Name = "CAJAMARCA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 968,
+                            Code1 = "73148",
+                            IsActive = false,
+                            Name = "CARMEN DE APICALÁ",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 969,
+                            Code1 = "73152",
+                            IsActive = false,
+                            Name = "CASABIANCA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 970,
+                            Code1 = "73168",
+                            IsActive = false,
+                            Name = "CHAPARRAL",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 971,
+                            Code1 = "73200",
+                            IsActive = false,
+                            Name = "COELLO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 972,
+                            Code1 = "73217",
+                            IsActive = false,
+                            Name = "COYAIMA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 973,
+                            Code1 = "73226",
+                            IsActive = false,
+                            Name = "CUNDAY",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 974,
+                            Code1 = "73236",
+                            IsActive = false,
+                            Name = "DOLORES",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 975,
+                            Code1 = "73268",
+                            IsActive = false,
+                            Name = "ESPINAL",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 976,
+                            Code1 = "73270",
+                            IsActive = false,
+                            Name = "FALAN",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 977,
+                            Code1 = "73275",
+                            IsActive = false,
+                            Name = "FLANDES",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 978,
+                            Code1 = "73283",
+                            IsActive = false,
+                            Name = "FRESNO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 979,
+                            Code1 = "73319",
+                            IsActive = false,
+                            Name = "GUAMO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 980,
+                            Code1 = "73347",
+                            IsActive = false,
+                            Name = "HERVEO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 981,
+                            Code1 = "73349",
+                            IsActive = false,
+                            Name = "HONDA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 982,
+                            Code1 = "73352",
+                            IsActive = false,
+                            Name = "ICONONZO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 983,
+                            Code1 = "73408",
+                            IsActive = false,
+                            Name = "LÉRIDA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 984,
+                            Code1 = "73411",
+                            IsActive = false,
+                            Name = "LÍBANO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 985,
+                            Code1 = "73443",
+                            IsActive = false,
+                            Name = "SAN SEBASTIÁN DE MARIQUITA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 986,
+                            Code1 = "73449",
+                            IsActive = false,
+                            Name = "MELGAR",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 987,
+                            Code1 = "73461",
+                            IsActive = false,
+                            Name = "MURILLO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 988,
+                            Code1 = "73483",
+                            IsActive = false,
+                            Name = "NATAGAIMA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 989,
+                            Code1 = "73504",
+                            IsActive = false,
+                            Name = "ORTEGA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 990,
+                            Code1 = "73520",
+                            IsActive = false,
+                            Name = "PALOCABILDO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 991,
+                            Code1 = "73547",
+                            IsActive = false,
+                            Name = "PIEDRAS",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 992,
+                            Code1 = "73555",
+                            IsActive = false,
+                            Name = "PLANADAS",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 993,
+                            Code1 = "73563",
+                            IsActive = false,
+                            Name = "PRADO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 994,
+                            Code1 = "73585",
+                            IsActive = false,
+                            Name = "PURIFICACIÓN",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 995,
+                            Code1 = "73616",
+                            IsActive = false,
+                            Name = "RIOBLANCO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 996,
+                            Code1 = "73622",
+                            IsActive = false,
+                            Name = "RONCESVALLES",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 997,
+                            Code1 = "73624",
+                            IsActive = false,
+                            Name = "ROVIRA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 998,
+                            Code1 = "73671",
+                            IsActive = false,
+                            Name = "SALDAÑA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 999,
+                            Code1 = "73675",
+                            IsActive = false,
+                            Name = "SAN ANTONIO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1000,
+                            Code1 = "73678",
+                            IsActive = false,
+                            Name = "SAN LUIS",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1001,
+                            Code1 = "73686",
+                            IsActive = false,
+                            Name = "SANTA ISABEL",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1002,
+                            Code1 = "73770",
+                            IsActive = false,
+                            Name = "SUÁREZ",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1003,
+                            Code1 = "73854",
+                            IsActive = false,
+                            Name = "VALLE DE SAN JUAN",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1004,
+                            Code1 = "73861",
+                            IsActive = false,
+                            Name = "VENADILLO",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1005,
+                            Code1 = "73870",
+                            IsActive = false,
+                            Name = "VILLAHERMOSA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1006,
+                            Code1 = "73873",
+                            IsActive = false,
+                            Name = "VILLARRICA",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            CityId = 1007,
+                            Code1 = "76001",
+                            IsActive = false,
+                            Name = "SANTIAGO DE CALI",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1008,
+                            Code1 = "76020",
+                            IsActive = false,
+                            Name = "ALCALÁ",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1009,
+                            Code1 = "76036",
+                            IsActive = false,
+                            Name = "ANDALUCÍA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1010,
+                            Code1 = "76041",
+                            IsActive = false,
+                            Name = "ANSERMANUEVO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1011,
+                            Code1 = "76054",
+                            IsActive = false,
+                            Name = "ARGELIA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1012,
+                            Code1 = "76100",
+                            IsActive = false,
+                            Name = "BOLÍVAR",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1013,
+                            Code1 = "76109",
+                            IsActive = false,
+                            Name = "BUENAVENTURA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1014,
+                            Code1 = "76111",
+                            IsActive = false,
+                            Name = "GUADALAJARA DE BUGA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1015,
+                            Code1 = "76113",
+                            IsActive = false,
+                            Name = "BUGALAGRANDE",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1016,
+                            Code1 = "76122",
+                            IsActive = false,
+                            Name = "CAICEDONIA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1017,
+                            Code1 = "76126",
+                            IsActive = false,
+                            Name = "CALIMA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1018,
+                            Code1 = "76130",
+                            IsActive = false,
+                            Name = "CANDELARIA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1019,
+                            Code1 = "76147",
+                            IsActive = false,
+                            Name = "CARTAGO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1020,
+                            Code1 = "76233",
+                            IsActive = false,
+                            Name = "DAGUA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1021,
+                            Code1 = "76243",
+                            IsActive = false,
+                            Name = "EL ÁGUILA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1022,
+                            Code1 = "76246",
+                            IsActive = false,
+                            Name = "EL CAIRO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1023,
+                            Code1 = "76248",
+                            IsActive = false,
+                            Name = "EL CERRITO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1024,
+                            Code1 = "76250",
+                            IsActive = false,
+                            Name = "EL DOVIO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1025,
+                            Code1 = "76275",
+                            IsActive = false,
+                            Name = "FLORIDA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1026,
+                            Code1 = "76306",
+                            IsActive = false,
+                            Name = "GINEBRA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1027,
+                            Code1 = "76318",
+                            IsActive = false,
+                            Name = "GUACARÍ",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1028,
+                            Code1 = "76364",
+                            IsActive = false,
+                            Name = "JAMUNDÍ",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1029,
+                            Code1 = "76377",
+                            IsActive = false,
+                            Name = "LA CUMBRE",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1030,
+                            Code1 = "76400",
+                            IsActive = false,
+                            Name = "LA UNIÓN",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1031,
+                            Code1 = "76403",
+                            IsActive = false,
+                            Name = "LA VICTORIA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1032,
+                            Code1 = "76497",
+                            IsActive = false,
+                            Name = "OBANDO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1033,
+                            Code1 = "76520",
+                            IsActive = false,
+                            Name = "PALMIRA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1034,
+                            Code1 = "76563",
+                            IsActive = false,
+                            Name = "PRADERA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1035,
+                            Code1 = "76606",
+                            IsActive = false,
+                            Name = "RESTREPO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1036,
+                            Code1 = "76616",
+                            IsActive = false,
+                            Name = "RIOFRÍO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1037,
+                            Code1 = "76622",
+                            IsActive = false,
+                            Name = "ROLDANILLO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1038,
+                            Code1 = "76670",
+                            IsActive = false,
+                            Name = "SAN PEDRO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1039,
+                            Code1 = "76736",
+                            IsActive = false,
+                            Name = "SEVILLA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1040,
+                            Code1 = "76823",
+                            IsActive = false,
+                            Name = "TORO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1041,
+                            Code1 = "76828",
+                            IsActive = false,
+                            Name = "TRUJILLO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1042,
+                            Code1 = "76834",
+                            IsActive = false,
+                            Name = "TULUÁ",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1043,
+                            Code1 = "76845",
+                            IsActive = false,
+                            Name = "ULLOA",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1044,
+                            Code1 = "76863",
+                            IsActive = false,
+                            Name = "VERSALLES",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1045,
+                            Code1 = "76869",
+                            IsActive = false,
+                            Name = "VIJES",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1046,
+                            Code1 = "76890",
+                            IsActive = false,
+                            Name = "YOTOCO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1047,
+                            Code1 = "76892",
+                            IsActive = false,
+                            Name = "YUMBO",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1048,
+                            Code1 = "76895",
+                            IsActive = false,
+                            Name = "ZARZAL",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            CityId = 1049,
+                            Code1 = "81001",
+                            IsActive = false,
+                            Name = "ARAUCA",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            CityId = 1050,
+                            Code1 = "81065",
+                            IsActive = false,
+                            Name = "ARAUQUITA",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            CityId = 1051,
+                            Code1 = "81220",
+                            IsActive = false,
+                            Name = "CRAVO NORTE",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            CityId = 1052,
+                            Code1 = "81300",
+                            IsActive = false,
+                            Name = "FORTUL",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            CityId = 1053,
+                            Code1 = "81591",
+                            IsActive = false,
+                            Name = "PUERTO RONDÓN",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            CityId = 1054,
+                            Code1 = "81736",
+                            IsActive = false,
+                            Name = "SARAVENA",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            CityId = 1055,
+                            Code1 = "81794",
+                            IsActive = false,
+                            Name = "TAME",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            CityId = 1056,
+                            Code1 = "85001",
+                            IsActive = false,
+                            Name = "YOPAL",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1057,
+                            Code1 = "85010",
+                            IsActive = false,
+                            Name = "AGUAZUL",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1058,
+                            Code1 = "85015",
+                            IsActive = false,
+                            Name = "CHÁMEZA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1059,
+                            Code1 = "85125",
+                            IsActive = false,
+                            Name = "HATO COROZAL",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1060,
+                            Code1 = "85136",
+                            IsActive = false,
+                            Name = "LA SALINA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1061,
+                            Code1 = "85139",
+                            IsActive = false,
+                            Name = "MANÍ",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1062,
+                            Code1 = "85162",
+                            IsActive = false,
+                            Name = "MONTERREY",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1063,
+                            Code1 = "85225",
+                            IsActive = false,
+                            Name = "NUNCHÍA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1064,
+                            Code1 = "85230",
+                            IsActive = false,
+                            Name = "OROCUÉ",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1065,
+                            Code1 = "85250",
+                            IsActive = false,
+                            Name = "PAZ DE ARIPORO",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1066,
+                            Code1 = "85263",
+                            IsActive = false,
+                            Name = "PORE",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1067,
+                            Code1 = "85279",
+                            IsActive = false,
+                            Name = "RECETOR",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1068,
+                            Code1 = "85300",
+                            IsActive = false,
+                            Name = "SABANALARGA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1069,
+                            Code1 = "85315",
+                            IsActive = false,
+                            Name = "SÁCAMA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1070,
+                            Code1 = "85325",
+                            IsActive = false,
+                            Name = "SAN LUIS DE PALENQUE",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1071,
+                            Code1 = "85400",
+                            IsActive = false,
+                            Name = "TÁMARA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1072,
+                            Code1 = "85410",
+                            IsActive = false,
+                            Name = "TAURAMENA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1073,
+                            Code1 = "85430",
+                            IsActive = false,
+                            Name = "TRINIDAD",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1074,
+                            Code1 = "85440",
+                            IsActive = false,
+                            Name = "VILLANUEVA",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            CityId = 1075,
+                            Code1 = "86001",
+                            IsActive = false,
+                            Name = "MOCOA",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1076,
+                            Code1 = "86219",
+                            IsActive = false,
+                            Name = "COLÓN",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1077,
+                            Code1 = "86320",
+                            IsActive = false,
+                            Name = "ORITO",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1078,
+                            Code1 = "86568",
+                            IsActive = false,
+                            Name = "PUERTO ASÍS",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1079,
+                            Code1 = "86569",
+                            IsActive = false,
+                            Name = "PUERTO CAICEDO",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1080,
+                            Code1 = "86571",
+                            IsActive = false,
+                            Name = "PUERTO GUZMÁN",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1081,
+                            Code1 = "86573",
+                            IsActive = false,
+                            Name = "PUERTO LEGUÍZAMO",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1082,
+                            Code1 = "86749",
+                            IsActive = false,
+                            Name = "SIBUNDOY",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1083,
+                            Code1 = "86755",
+                            IsActive = false,
+                            Name = "SAN FRANCISCO",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1084,
+                            Code1 = "86757",
+                            IsActive = false,
+                            Name = "SAN MIGUEL",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1085,
+                            Code1 = "86760",
+                            IsActive = false,
+                            Name = "SANTIAGO",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1086,
+                            Code1 = "86865",
+                            IsActive = false,
+                            Name = "VALLE DEL GUAMUEZ",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1087,
+                            Code1 = "86885",
+                            IsActive = false,
+                            Name = "VILLAGARZÓN",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            CityId = 1088,
+                            Code1 = "88001",
+                            IsActive = false,
+                            Name = "SAN ANDRÉS",
+                            StateId = 28
+                        },
+                        new
+                        {
+                            CityId = 1089,
+                            Code1 = "88564",
+                            IsActive = false,
+                            Name = "PROVIDENCIA",
+                            StateId = 28
+                        },
+                        new
+                        {
+                            CityId = 1090,
+                            Code1 = "91001",
+                            IsActive = false,
+                            Name = "LETICIA",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1091,
+                            Code1 = "91263",
+                            IsActive = false,
+                            Name = "EL ENCANTO",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1092,
+                            Code1 = "91405",
+                            IsActive = false,
+                            Name = "LA CHORRERA",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1093,
+                            Code1 = "91407",
+                            IsActive = false,
+                            Name = "LA PEDRERA",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1094,
+                            Code1 = "91430",
+                            IsActive = false,
+                            Name = "LA VICTORIA",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1095,
+                            Code1 = "91460",
+                            IsActive = false,
+                            Name = "MIRITÍ - PARANÁ",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1096,
+                            Code1 = "91530",
+                            IsActive = false,
+                            Name = "PUERTO ALEGRÍA",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1097,
+                            Code1 = "91536",
+                            IsActive = false,
+                            Name = "PUERTO ARICA",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1098,
+                            Code1 = "91540",
+                            IsActive = false,
+                            Name = "PUERTO NARIÑO",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1099,
+                            Code1 = "91669",
+                            IsActive = false,
+                            Name = "PUERTO SANTANDER",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1100,
+                            Code1 = "91798",
+                            IsActive = false,
+                            Name = "TARAPACÁ",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            CityId = 1101,
+                            Code1 = "94001",
+                            IsActive = false,
+                            Name = "INÍRIDA",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1102,
+                            Code1 = "94343",
+                            IsActive = false,
+                            Name = "BARRANCOMINAS",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1103,
+                            Code1 = "94883",
+                            IsActive = false,
+                            Name = "SAN FELIPE",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1104,
+                            Code1 = "94884",
+                            IsActive = false,
+                            Name = "PUERTO COLOMBIA",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1105,
+                            Code1 = "94885",
+                            IsActive = false,
+                            Name = "LA GUADALUPE",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1106,
+                            Code1 = "94886",
+                            IsActive = false,
+                            Name = "CACAHUAL",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1107,
+                            Code1 = "94887",
+                            IsActive = false,
+                            Name = "PANA PANA",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1108,
+                            Code1 = "94888",
+                            IsActive = false,
+                            Name = "MORICHAL",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            CityId = 1109,
+                            Code1 = "95001",
+                            IsActive = false,
+                            Name = "SAN JOSÉ DEL GUAVIARE",
+                            StateId = 31
+                        },
+                        new
+                        {
+                            CityId = 1110,
+                            Code1 = "95015",
+                            IsActive = false,
+                            Name = "CALAMAR",
+                            StateId = 31
+                        },
+                        new
+                        {
+                            CityId = 1111,
+                            Code1 = "95025",
+                            IsActive = false,
+                            Name = "EL RETORNO",
+                            StateId = 31
+                        },
+                        new
+                        {
+                            CityId = 1112,
+                            Code1 = "95200",
+                            IsActive = false,
+                            Name = "MIRAFLORES",
+                            StateId = 31
+                        },
+                        new
+                        {
+                            CityId = 1113,
+                            Code1 = "97001",
+                            IsActive = false,
+                            Name = "MITÚ",
+                            StateId = 32
+                        },
+                        new
+                        {
+                            CityId = 1114,
+                            Code1 = "97161",
+                            IsActive = false,
+                            Name = "CARURÚ",
+                            StateId = 32
+                        },
+                        new
+                        {
+                            CityId = 1115,
+                            Code1 = "97511",
+                            IsActive = false,
+                            Name = "PACOA",
+                            StateId = 32
+                        },
+                        new
+                        {
+                            CityId = 1116,
+                            Code1 = "97666",
+                            IsActive = false,
+                            Name = "TARAIRA",
+                            StateId = 32
+                        },
+                        new
+                        {
+                            CityId = 1117,
+                            Code1 = "97777",
+                            IsActive = false,
+                            Name = "PAPUNAHUA",
+                            StateId = 32
+                        },
+                        new
+                        {
+                            CityId = 1118,
+                            Code1 = "97889",
+                            IsActive = false,
+                            Name = "YAVARATÉ",
+                            StateId = 32
+                        },
+                        new
+                        {
+                            CityId = 1119,
+                            Code1 = "99001",
+                            IsActive = false,
+                            Name = "PUERTO CARREÑO",
+                            StateId = 33
+                        },
+                        new
+                        {
+                            CityId = 1120,
+                            Code1 = "99524",
+                            IsActive = false,
+                            Name = "LA PRIMAVERA",
+                            StateId = 33
+                        },
+                        new
+                        {
+                            CityId = 1121,
+                            Code1 = "99624",
+                            IsActive = false,
+                            Name = "SANTA ROSALÍA",
+                            StateId = 33
+                        },
+                        new
+                        {
+                            CityId = 1122,
+                            Code1 = "99773",
+                            IsActive = false,
+                            Name = "CUMARIBO",
+                            StateId = 33
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.DayOfWeekSettings", b =>
@@ -444,6 +9619,18 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Drivers");
+
+                    b.HasData(
+                        new
+                        {
+                            DriverId = new Guid("9f9e3f43-0a60-4cdc-a9e0-bf4f0197172a"),
+                            IdentificationNumber = "1234567890",
+                            IdentificationTypeId = 1,
+                            IsActive = true,
+                            LicenceNumber = "1234567890",
+                            Phone = "(+57) 3011234567",
+                            UserId = new Guid("ea956473-865a-490b-abbf-767b0b67fd7c")
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.HistoryAppointment", b =>
@@ -615,6 +9802,2249 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasKey("ISOCountryId");
 
                     b.ToTable("ISOCountries");
+
+                    b.HasData(
+                        new
+                        {
+                            ISOCountryId = 1,
+                            A2 = "AF",
+                            A3 = "AFG",
+                            Code = "4",
+                            IsActive = true,
+                            Name = "Afghanistan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 2,
+                            A2 = "AL",
+                            A3 = "ALB",
+                            Code = "8",
+                            IsActive = true,
+                            Name = "Albania"
+                        },
+                        new
+                        {
+                            ISOCountryId = 3,
+                            A2 = "DZ",
+                            A3 = "DZA",
+                            Code = "12",
+                            IsActive = true,
+                            Name = "Algeria"
+                        },
+                        new
+                        {
+                            ISOCountryId = 4,
+                            A2 = "AS",
+                            A3 = "ASM",
+                            Code = "16",
+                            IsActive = true,
+                            Name = "American Samoa"
+                        },
+                        new
+                        {
+                            ISOCountryId = 5,
+                            A2 = "AD",
+                            A3 = "AND",
+                            Code = "20",
+                            IsActive = true,
+                            Name = "Andorra"
+                        },
+                        new
+                        {
+                            ISOCountryId = 6,
+                            A2 = "AO",
+                            A3 = "AGO",
+                            Code = "24",
+                            IsActive = true,
+                            Name = "Angola"
+                        },
+                        new
+                        {
+                            ISOCountryId = 7,
+                            A2 = "AI",
+                            A3 = "AIA",
+                            Code = "660",
+                            IsActive = true,
+                            Name = "Anguilla"
+                        },
+                        new
+                        {
+                            ISOCountryId = 8,
+                            A2 = "AQ",
+                            A3 = "ATA",
+                            Code = "10",
+                            IsActive = true,
+                            Name = "Antarctica"
+                        },
+                        new
+                        {
+                            ISOCountryId = 9,
+                            A2 = "AG",
+                            A3 = "ATG",
+                            Code = "28",
+                            IsActive = true,
+                            Name = "Antigua and Barbuda"
+                        },
+                        new
+                        {
+                            ISOCountryId = 10,
+                            A2 = "AR",
+                            A3 = "ARG",
+                            Code = "32",
+                            IsActive = true,
+                            Name = "Argentina"
+                        },
+                        new
+                        {
+                            ISOCountryId = 11,
+                            A2 = "AM",
+                            A3 = "ARM",
+                            Code = "51",
+                            IsActive = true,
+                            Name = "Armenia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 12,
+                            A2 = "AW",
+                            A3 = "ABW",
+                            Code = "533",
+                            IsActive = true,
+                            Name = "Aruba"
+                        },
+                        new
+                        {
+                            ISOCountryId = 13,
+                            A2 = "AU",
+                            A3 = "AUS",
+                            Code = "36",
+                            IsActive = true,
+                            Name = "Australia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 14,
+                            A2 = "AT",
+                            A3 = "AUT",
+                            Code = "40",
+                            IsActive = true,
+                            Name = "Austria"
+                        },
+                        new
+                        {
+                            ISOCountryId = 15,
+                            A2 = "AZ",
+                            A3 = "AZE",
+                            Code = "31",
+                            IsActive = true,
+                            Name = "Azerbaijan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 16,
+                            A2 = "BS",
+                            A3 = "BHS",
+                            Code = "44",
+                            IsActive = true,
+                            Name = "Bahamas (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 17,
+                            A2 = "BH",
+                            A3 = "BHR",
+                            Code = "48",
+                            IsActive = true,
+                            Name = "Bahrain"
+                        },
+                        new
+                        {
+                            ISOCountryId = 18,
+                            A2 = "BD",
+                            A3 = "BGD",
+                            Code = "50",
+                            IsActive = true,
+                            Name = "Bangladesh"
+                        },
+                        new
+                        {
+                            ISOCountryId = 19,
+                            A2 = "BB",
+                            A3 = "BRB",
+                            Code = "52",
+                            IsActive = true,
+                            Name = "Barbados"
+                        },
+                        new
+                        {
+                            ISOCountryId = 20,
+                            A2 = "BY",
+                            A3 = "BLR",
+                            Code = "112",
+                            IsActive = true,
+                            Name = "Belarus"
+                        },
+                        new
+                        {
+                            ISOCountryId = 21,
+                            A2 = "BE",
+                            A3 = "BEL",
+                            Code = "56",
+                            IsActive = true,
+                            Name = "Belgium"
+                        },
+                        new
+                        {
+                            ISOCountryId = 22,
+                            A2 = "BZ",
+                            A3 = "BLZ",
+                            Code = "84",
+                            IsActive = true,
+                            Name = "Belize"
+                        },
+                        new
+                        {
+                            ISOCountryId = 23,
+                            A2 = "BJ",
+                            A3 = "BEN",
+                            Code = "204",
+                            IsActive = true,
+                            Name = "Benin"
+                        },
+                        new
+                        {
+                            ISOCountryId = 24,
+                            A2 = "BM",
+                            A3 = "BMU",
+                            Code = "60",
+                            IsActive = true,
+                            Name = "Bermuda"
+                        },
+                        new
+                        {
+                            ISOCountryId = 25,
+                            A2 = "BT",
+                            A3 = "BTN",
+                            Code = "64",
+                            IsActive = true,
+                            Name = "Bhutan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 26,
+                            A2 = "BO",
+                            A3 = "BOL",
+                            Code = "68",
+                            IsActive = true,
+                            Name = "Bolivia (Plurinational State of)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 27,
+                            A2 = "BQ",
+                            A3 = "BES",
+                            Code = "535",
+                            IsActive = true,
+                            Name = "Bonaire, Sint Eustatius and Saba"
+                        },
+                        new
+                        {
+                            ISOCountryId = 28,
+                            A2 = "BA",
+                            A3 = "BIH",
+                            Code = "70",
+                            IsActive = true,
+                            Name = "Bosnia and Herzegovina"
+                        },
+                        new
+                        {
+                            ISOCountryId = 29,
+                            A2 = "BW",
+                            A3 = "BWA",
+                            Code = "72",
+                            IsActive = true,
+                            Name = "Botswana"
+                        },
+                        new
+                        {
+                            ISOCountryId = 30,
+                            A2 = "BV",
+                            A3 = "BVT",
+                            Code = "74",
+                            IsActive = true,
+                            Name = "Bouvet Island"
+                        },
+                        new
+                        {
+                            ISOCountryId = 31,
+                            A2 = "BR",
+                            A3 = "BRA",
+                            Code = "76",
+                            IsActive = true,
+                            Name = "Brazil"
+                        },
+                        new
+                        {
+                            ISOCountryId = 32,
+                            A2 = "IO",
+                            A3 = "IOT",
+                            Code = "86",
+                            IsActive = true,
+                            Name = "British Indian Ocean Territory (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 33,
+                            A2 = "BN",
+                            A3 = "BRN",
+                            Code = "96",
+                            IsActive = true,
+                            Name = "Brunei Darussalam"
+                        },
+                        new
+                        {
+                            ISOCountryId = 34,
+                            A2 = "BG",
+                            A3 = "BGR",
+                            Code = "100",
+                            IsActive = true,
+                            Name = "Bulgaria"
+                        },
+                        new
+                        {
+                            ISOCountryId = 35,
+                            A2 = "BF",
+                            A3 = "BFA",
+                            Code = "854",
+                            IsActive = true,
+                            Name = "Burkina Faso"
+                        },
+                        new
+                        {
+                            ISOCountryId = 36,
+                            A2 = "BI",
+                            A3 = "BDI",
+                            Code = "108",
+                            IsActive = true,
+                            Name = "Burundi"
+                        },
+                        new
+                        {
+                            ISOCountryId = 37,
+                            A2 = "CV",
+                            A3 = "CPV",
+                            Code = "132",
+                            IsActive = true,
+                            Name = "Cabo Verde"
+                        },
+                        new
+                        {
+                            ISOCountryId = 38,
+                            A2 = "KH",
+                            A3 = "KHM",
+                            Code = "116",
+                            IsActive = true,
+                            Name = "Cambodia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 39,
+                            A2 = "CM",
+                            A3 = "CMR",
+                            Code = "120",
+                            IsActive = true,
+                            Name = "Cameroon"
+                        },
+                        new
+                        {
+                            ISOCountryId = 40,
+                            A2 = "CA",
+                            A3 = "CAN",
+                            Code = "124",
+                            IsActive = true,
+                            Name = "Canada"
+                        },
+                        new
+                        {
+                            ISOCountryId = 41,
+                            A2 = "KY",
+                            A3 = "CYM",
+                            Code = "136",
+                            IsActive = true,
+                            Name = "Cayman Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 42,
+                            A2 = "CF",
+                            A3 = "CAF",
+                            Code = "140",
+                            IsActive = true,
+                            Name = "Central African Republic (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 43,
+                            A2 = "TD",
+                            A3 = "TCD",
+                            Code = "148",
+                            IsActive = true,
+                            Name = "Chad"
+                        },
+                        new
+                        {
+                            ISOCountryId = 44,
+                            A2 = "CL",
+                            A3 = "CHL",
+                            Code = "152",
+                            IsActive = true,
+                            Name = "Chile"
+                        },
+                        new
+                        {
+                            ISOCountryId = 45,
+                            A2 = "CN",
+                            A3 = "CHN",
+                            Code = "156",
+                            IsActive = true,
+                            Name = "China"
+                        },
+                        new
+                        {
+                            ISOCountryId = 46,
+                            A2 = "CX",
+                            A3 = "CXR",
+                            Code = "162",
+                            IsActive = true,
+                            Name = "Christmas Island"
+                        },
+                        new
+                        {
+                            ISOCountryId = 47,
+                            A2 = "CC",
+                            A3 = "CCK",
+                            Code = "166",
+                            IsActive = true,
+                            Name = "Cocos (Keeling) Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 48,
+                            A2 = "CO",
+                            A3 = "COL",
+                            Code = "170",
+                            IsActive = true,
+                            Name = "Colombia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 49,
+                            A2 = "KM",
+                            A3 = "COM",
+                            Code = "174",
+                            IsActive = true,
+                            Name = "Comoros (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 50,
+                            A2 = "CD",
+                            A3 = "COD",
+                            Code = "180",
+                            IsActive = true,
+                            Name = "Congo (the Democratic Republic of the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 51,
+                            A2 = "CG",
+                            A3 = "COG",
+                            Code = "178",
+                            IsActive = true,
+                            Name = "Congo (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 52,
+                            A2 = "CK",
+                            A3 = "COK",
+                            Code = "184",
+                            IsActive = true,
+                            Name = "Cook Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 53,
+                            A2 = "CR",
+                            A3 = "CRI",
+                            Code = "188",
+                            IsActive = true,
+                            Name = "Costa Rica"
+                        },
+                        new
+                        {
+                            ISOCountryId = 54,
+                            A2 = "HR",
+                            A3 = "HRV",
+                            Code = "191",
+                            IsActive = true,
+                            Name = "Croatia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 55,
+                            A2 = "CU",
+                            A3 = "CUB",
+                            Code = "192",
+                            IsActive = true,
+                            Name = "Cuba"
+                        },
+                        new
+                        {
+                            ISOCountryId = 56,
+                            A2 = "CW",
+                            A3 = "CUW",
+                            Code = "531",
+                            IsActive = true,
+                            Name = "Curaçao"
+                        },
+                        new
+                        {
+                            ISOCountryId = 57,
+                            A2 = "CY",
+                            A3 = "CYP",
+                            Code = "196",
+                            IsActive = true,
+                            Name = "Cyprus"
+                        },
+                        new
+                        {
+                            ISOCountryId = 58,
+                            A2 = "CZ",
+                            A3 = "CZE",
+                            Code = "203",
+                            IsActive = true,
+                            Name = "Czechia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 59,
+                            A2 = "CI",
+                            A3 = "CIV",
+                            Code = "384",
+                            IsActive = true,
+                            Name = "Côte d'Ivoire"
+                        },
+                        new
+                        {
+                            ISOCountryId = 60,
+                            A2 = "DK",
+                            A3 = "DNK",
+                            Code = "208",
+                            IsActive = true,
+                            Name = "Denmark"
+                        },
+                        new
+                        {
+                            ISOCountryId = 61,
+                            A2 = "DJ",
+                            A3 = "DJI",
+                            Code = "262",
+                            IsActive = true,
+                            Name = "Djibouti"
+                        },
+                        new
+                        {
+                            ISOCountryId = 62,
+                            A2 = "DM",
+                            A3 = "DMA",
+                            Code = "212",
+                            IsActive = true,
+                            Name = "Dominica"
+                        },
+                        new
+                        {
+                            ISOCountryId = 63,
+                            A2 = "DO",
+                            A3 = "DOM",
+                            Code = "214",
+                            IsActive = true,
+                            Name = "Dominican Republic (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 64,
+                            A2 = "EC",
+                            A3 = "ECU",
+                            Code = "218",
+                            IsActive = true,
+                            Name = "Ecuador"
+                        },
+                        new
+                        {
+                            ISOCountryId = 65,
+                            A2 = "EG",
+                            A3 = "EGY",
+                            Code = "818",
+                            IsActive = true,
+                            Name = "Egypt"
+                        },
+                        new
+                        {
+                            ISOCountryId = 66,
+                            A2 = "SV",
+                            A3 = "SLV",
+                            Code = "222",
+                            IsActive = true,
+                            Name = "El Salvador"
+                        },
+                        new
+                        {
+                            ISOCountryId = 67,
+                            A2 = "GQ",
+                            A3 = "GNQ",
+                            Code = "226",
+                            IsActive = true,
+                            Name = "Equatorial Guinea"
+                        },
+                        new
+                        {
+                            ISOCountryId = 68,
+                            A2 = "ER",
+                            A3 = "ERI",
+                            Code = "232",
+                            IsActive = true,
+                            Name = "Eritrea"
+                        },
+                        new
+                        {
+                            ISOCountryId = 69,
+                            A2 = "EE",
+                            A3 = "EST",
+                            Code = "233",
+                            IsActive = true,
+                            Name = "Estonia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 70,
+                            A2 = "SZ",
+                            A3 = "SWZ",
+                            Code = "748",
+                            IsActive = true,
+                            Name = "Eswatini"
+                        },
+                        new
+                        {
+                            ISOCountryId = 71,
+                            A2 = "ET",
+                            A3 = "ETH",
+                            Code = "231",
+                            IsActive = true,
+                            Name = "Ethiopia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 72,
+                            A2 = "FK",
+                            A3 = "FLK",
+                            Code = "238",
+                            IsActive = true,
+                            Name = "Falkland Islands (the) [Malvinas]"
+                        },
+                        new
+                        {
+                            ISOCountryId = 73,
+                            A2 = "FO",
+                            A3 = "FRO",
+                            Code = "234",
+                            IsActive = true,
+                            Name = "Faroe Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 74,
+                            A2 = "FJ",
+                            A3 = "FJI",
+                            Code = "242",
+                            IsActive = true,
+                            Name = "Fiji"
+                        },
+                        new
+                        {
+                            ISOCountryId = 75,
+                            A2 = "FI",
+                            A3 = "FIN",
+                            Code = "246",
+                            IsActive = true,
+                            Name = "Finland"
+                        },
+                        new
+                        {
+                            ISOCountryId = 76,
+                            A2 = "FR",
+                            A3 = "FRA",
+                            Code = "250",
+                            IsActive = true,
+                            Name = "France"
+                        },
+                        new
+                        {
+                            ISOCountryId = 77,
+                            A2 = "GF",
+                            A3 = "GUF",
+                            Code = "254",
+                            IsActive = true,
+                            Name = "French Guiana"
+                        },
+                        new
+                        {
+                            ISOCountryId = 78,
+                            A2 = "PF",
+                            A3 = "PYF",
+                            Code = "258",
+                            IsActive = true,
+                            Name = "French Polynesia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 79,
+                            A2 = "TF",
+                            A3 = "ATF",
+                            Code = "260",
+                            IsActive = true,
+                            Name = "French Southern Territories (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 80,
+                            A2 = "GA",
+                            A3 = "GAB",
+                            Code = "266",
+                            IsActive = true,
+                            Name = "Gabon"
+                        },
+                        new
+                        {
+                            ISOCountryId = 81,
+                            A2 = "GM",
+                            A3 = "GMB",
+                            Code = "270",
+                            IsActive = true,
+                            Name = "Gambia (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 82,
+                            A2 = "GE",
+                            A3 = "GEO",
+                            Code = "268",
+                            IsActive = true,
+                            Name = "Georgia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 83,
+                            A2 = "DE",
+                            A3 = "DEU",
+                            Code = "276",
+                            IsActive = true,
+                            Name = "Germany"
+                        },
+                        new
+                        {
+                            ISOCountryId = 84,
+                            A2 = "GH",
+                            A3 = "GHA",
+                            Code = "288",
+                            IsActive = true,
+                            Name = "Ghana"
+                        },
+                        new
+                        {
+                            ISOCountryId = 85,
+                            A2 = "GI",
+                            A3 = "GIB",
+                            Code = "292",
+                            IsActive = true,
+                            Name = "Gibraltar"
+                        },
+                        new
+                        {
+                            ISOCountryId = 86,
+                            A2 = "GR",
+                            A3 = "GRC",
+                            Code = "300",
+                            IsActive = true,
+                            Name = "Greece"
+                        },
+                        new
+                        {
+                            ISOCountryId = 87,
+                            A2 = "GL",
+                            A3 = "GRL",
+                            Code = "304",
+                            IsActive = true,
+                            Name = "Greenland"
+                        },
+                        new
+                        {
+                            ISOCountryId = 88,
+                            A2 = "GD",
+                            A3 = "GRD",
+                            Code = "308",
+                            IsActive = true,
+                            Name = "Grenada"
+                        },
+                        new
+                        {
+                            ISOCountryId = 89,
+                            A2 = "GP",
+                            A3 = "GLP",
+                            Code = "312",
+                            IsActive = true,
+                            Name = "Guadeloupe"
+                        },
+                        new
+                        {
+                            ISOCountryId = 90,
+                            A2 = "GU",
+                            A3 = "GUM",
+                            Code = "316",
+                            IsActive = true,
+                            Name = "Guam"
+                        },
+                        new
+                        {
+                            ISOCountryId = 91,
+                            A2 = "GT",
+                            A3 = "GTM",
+                            Code = "320",
+                            IsActive = true,
+                            Name = "Guatemala"
+                        },
+                        new
+                        {
+                            ISOCountryId = 92,
+                            A2 = "GG",
+                            A3 = "GGY",
+                            Code = "831",
+                            IsActive = true,
+                            Name = "Guernsey"
+                        },
+                        new
+                        {
+                            ISOCountryId = 93,
+                            A2 = "GN",
+                            A3 = "GIN",
+                            Code = "324",
+                            IsActive = true,
+                            Name = "Guinea"
+                        },
+                        new
+                        {
+                            ISOCountryId = 94,
+                            A2 = "GW",
+                            A3 = "GNB",
+                            Code = "624",
+                            IsActive = true,
+                            Name = "Guinea-Bissau"
+                        },
+                        new
+                        {
+                            ISOCountryId = 95,
+                            A2 = "GY",
+                            A3 = "GUY",
+                            Code = "328",
+                            IsActive = true,
+                            Name = "Guyana"
+                        },
+                        new
+                        {
+                            ISOCountryId = 96,
+                            A2 = "HT",
+                            A3 = "HTI",
+                            Code = "332",
+                            IsActive = true,
+                            Name = "Haiti"
+                        },
+                        new
+                        {
+                            ISOCountryId = 97,
+                            A2 = "HM",
+                            A3 = "HMD",
+                            Code = "334",
+                            IsActive = true,
+                            Name = "Heard Island and McDonald Islands"
+                        },
+                        new
+                        {
+                            ISOCountryId = 98,
+                            A2 = "VA",
+                            A3 = "VAT",
+                            Code = "336",
+                            IsActive = true,
+                            Name = "Holy See (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 99,
+                            A2 = "HN",
+                            A3 = "HND",
+                            Code = "340",
+                            IsActive = true,
+                            Name = "Honduras"
+                        },
+                        new
+                        {
+                            ISOCountryId = 100,
+                            A2 = "HK",
+                            A3 = "HKG",
+                            Code = "344",
+                            IsActive = true,
+                            Name = "Hong Kong"
+                        },
+                        new
+                        {
+                            ISOCountryId = 101,
+                            A2 = "HU",
+                            A3 = "HUN",
+                            Code = "348",
+                            IsActive = true,
+                            Name = "Hungary"
+                        },
+                        new
+                        {
+                            ISOCountryId = 102,
+                            A2 = "IS",
+                            A3 = "ISL",
+                            Code = "352",
+                            IsActive = true,
+                            Name = "Iceland"
+                        },
+                        new
+                        {
+                            ISOCountryId = 103,
+                            A2 = "IN",
+                            A3 = "IND",
+                            Code = "356",
+                            IsActive = true,
+                            Name = "India"
+                        },
+                        new
+                        {
+                            ISOCountryId = 104,
+                            A2 = "ID",
+                            A3 = "IDN",
+                            Code = "360",
+                            IsActive = true,
+                            Name = "Indonesia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 105,
+                            A2 = "IR",
+                            A3 = "IRN",
+                            Code = "364",
+                            IsActive = true,
+                            Name = "Iran (Islamic Republic of)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 106,
+                            A2 = "IQ",
+                            A3 = "IRQ",
+                            Code = "368",
+                            IsActive = true,
+                            Name = "Iraq"
+                        },
+                        new
+                        {
+                            ISOCountryId = 107,
+                            A2 = "IE",
+                            A3 = "IRL",
+                            Code = "372",
+                            IsActive = true,
+                            Name = "Ireland"
+                        },
+                        new
+                        {
+                            ISOCountryId = 108,
+                            A2 = "IM",
+                            A3 = "IMN",
+                            Code = "833",
+                            IsActive = true,
+                            Name = "Isle of Man"
+                        },
+                        new
+                        {
+                            ISOCountryId = 109,
+                            A2 = "IL",
+                            A3 = "ISR",
+                            Code = "376",
+                            IsActive = true,
+                            Name = "Israel"
+                        },
+                        new
+                        {
+                            ISOCountryId = 110,
+                            A2 = "IT",
+                            A3 = "ITA",
+                            Code = "380",
+                            IsActive = true,
+                            Name = "Italy"
+                        },
+                        new
+                        {
+                            ISOCountryId = 111,
+                            A2 = "JM",
+                            A3 = "JAM",
+                            Code = "388",
+                            IsActive = true,
+                            Name = "Jamaica"
+                        },
+                        new
+                        {
+                            ISOCountryId = 112,
+                            A2 = "JP",
+                            A3 = "JPN",
+                            Code = "392",
+                            IsActive = true,
+                            Name = "Japan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 113,
+                            A2 = "JE",
+                            A3 = "JEY",
+                            Code = "832",
+                            IsActive = true,
+                            Name = "Jersey"
+                        },
+                        new
+                        {
+                            ISOCountryId = 114,
+                            A2 = "JO",
+                            A3 = "JOR",
+                            Code = "400",
+                            IsActive = true,
+                            Name = "Jordan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 115,
+                            A2 = "KZ",
+                            A3 = "KAZ",
+                            Code = "398",
+                            IsActive = true,
+                            Name = "Kazakhstan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 116,
+                            A2 = "KE",
+                            A3 = "KEN",
+                            Code = "404",
+                            IsActive = true,
+                            Name = "Kenya"
+                        },
+                        new
+                        {
+                            ISOCountryId = 117,
+                            A2 = "KI",
+                            A3 = "KIR",
+                            Code = "296",
+                            IsActive = true,
+                            Name = "Kiribati"
+                        },
+                        new
+                        {
+                            ISOCountryId = 118,
+                            A2 = "KP",
+                            A3 = "PRK",
+                            Code = "408",
+                            IsActive = true,
+                            Name = "Korea (the Democratic People's Republic of)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 119,
+                            A2 = "KR",
+                            A3 = "KOR",
+                            Code = "410",
+                            IsActive = true,
+                            Name = "Korea (the Republic of)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 120,
+                            A2 = "KW",
+                            A3 = "KWT",
+                            Code = "414",
+                            IsActive = true,
+                            Name = "Kuwait"
+                        },
+                        new
+                        {
+                            ISOCountryId = 121,
+                            A2 = "KG",
+                            A3 = "KGZ",
+                            Code = "417",
+                            IsActive = true,
+                            Name = "Kyrgyzstan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 122,
+                            A2 = "LA",
+                            A3 = "LAO",
+                            Code = "418",
+                            IsActive = true,
+                            Name = "Lao People's Democratic Republic (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 123,
+                            A2 = "LV",
+                            A3 = "LVA",
+                            Code = "428",
+                            IsActive = true,
+                            Name = "Latvia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 124,
+                            A2 = "LB",
+                            A3 = "LBN",
+                            Code = "422",
+                            IsActive = true,
+                            Name = "Lebanon"
+                        },
+                        new
+                        {
+                            ISOCountryId = 125,
+                            A2 = "LS",
+                            A3 = "LSO",
+                            Code = "426",
+                            IsActive = true,
+                            Name = "Lesotho"
+                        },
+                        new
+                        {
+                            ISOCountryId = 126,
+                            A2 = "LR",
+                            A3 = "LBR",
+                            Code = "430",
+                            IsActive = true,
+                            Name = "Liberia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 127,
+                            A2 = "LY",
+                            A3 = "LBY",
+                            Code = "434",
+                            IsActive = true,
+                            Name = "Libya"
+                        },
+                        new
+                        {
+                            ISOCountryId = 128,
+                            A2 = "LI",
+                            A3 = "LIE",
+                            Code = "438",
+                            IsActive = true,
+                            Name = "Liechtenstein"
+                        },
+                        new
+                        {
+                            ISOCountryId = 129,
+                            A2 = "LT",
+                            A3 = "LTU",
+                            Code = "440",
+                            IsActive = true,
+                            Name = "Lithuania"
+                        },
+                        new
+                        {
+                            ISOCountryId = 130,
+                            A2 = "LU",
+                            A3 = "LUX",
+                            Code = "442",
+                            IsActive = true,
+                            Name = "Luxembourg"
+                        },
+                        new
+                        {
+                            ISOCountryId = 131,
+                            A2 = "MO",
+                            A3 = "MAC",
+                            Code = "446",
+                            IsActive = true,
+                            Name = "Macao"
+                        },
+                        new
+                        {
+                            ISOCountryId = 132,
+                            A2 = "MG",
+                            A3 = "MDG",
+                            Code = "450",
+                            IsActive = true,
+                            Name = "Madagascar"
+                        },
+                        new
+                        {
+                            ISOCountryId = 133,
+                            A2 = "MW",
+                            A3 = "MWI",
+                            Code = "454",
+                            IsActive = true,
+                            Name = "Malawi"
+                        },
+                        new
+                        {
+                            ISOCountryId = 134,
+                            A2 = "MY",
+                            A3 = "MYS",
+                            Code = "458",
+                            IsActive = true,
+                            Name = "Malaysia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 135,
+                            A2 = "MV",
+                            A3 = "MDV",
+                            Code = "462",
+                            IsActive = true,
+                            Name = "Maldives"
+                        },
+                        new
+                        {
+                            ISOCountryId = 136,
+                            A2 = "ML",
+                            A3 = "MLI",
+                            Code = "466",
+                            IsActive = true,
+                            Name = "Mali"
+                        },
+                        new
+                        {
+                            ISOCountryId = 137,
+                            A2 = "MT",
+                            A3 = "MLT",
+                            Code = "470",
+                            IsActive = true,
+                            Name = "Malta"
+                        },
+                        new
+                        {
+                            ISOCountryId = 138,
+                            A2 = "MH",
+                            A3 = "MHL",
+                            Code = "584",
+                            IsActive = true,
+                            Name = "Marshall Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 139,
+                            A2 = "MQ",
+                            A3 = "MTQ",
+                            Code = "474",
+                            IsActive = true,
+                            Name = "Martinique"
+                        },
+                        new
+                        {
+                            ISOCountryId = 140,
+                            A2 = "MR",
+                            A3 = "MRT",
+                            Code = "478",
+                            IsActive = true,
+                            Name = "Mauritania"
+                        },
+                        new
+                        {
+                            ISOCountryId = 141,
+                            A2 = "MU",
+                            A3 = "MUS",
+                            Code = "480",
+                            IsActive = true,
+                            Name = "Mauritius"
+                        },
+                        new
+                        {
+                            ISOCountryId = 142,
+                            A2 = "YT",
+                            A3 = "MYT",
+                            Code = "175",
+                            IsActive = true,
+                            Name = "Mayotte"
+                        },
+                        new
+                        {
+                            ISOCountryId = 143,
+                            A2 = "MX",
+                            A3 = "MEX",
+                            Code = "484",
+                            IsActive = true,
+                            Name = "Mexico"
+                        },
+                        new
+                        {
+                            ISOCountryId = 144,
+                            A2 = "FM",
+                            A3 = "FSM",
+                            Code = "583",
+                            IsActive = true,
+                            Name = "Micronesia (Federated States of)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 145,
+                            A2 = "MD",
+                            A3 = "MDA",
+                            Code = "498",
+                            IsActive = true,
+                            Name = "Moldova (the Republic of)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 146,
+                            A2 = "MC",
+                            A3 = "MCO",
+                            Code = "492",
+                            IsActive = true,
+                            Name = "Monaco"
+                        },
+                        new
+                        {
+                            ISOCountryId = 147,
+                            A2 = "MN",
+                            A3 = "MNG",
+                            Code = "496",
+                            IsActive = true,
+                            Name = "Mongolia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 148,
+                            A2 = "ME",
+                            A3 = "MNE",
+                            Code = "499",
+                            IsActive = true,
+                            Name = "Montenegro"
+                        },
+                        new
+                        {
+                            ISOCountryId = 149,
+                            A2 = "MS",
+                            A3 = "MSR",
+                            Code = "500",
+                            IsActive = true,
+                            Name = "Montserrat"
+                        },
+                        new
+                        {
+                            ISOCountryId = 150,
+                            A2 = "MA",
+                            A3 = "MAR",
+                            Code = "504",
+                            IsActive = true,
+                            Name = "Morocco"
+                        },
+                        new
+                        {
+                            ISOCountryId = 151,
+                            A2 = "MZ",
+                            A3 = "MOZ",
+                            Code = "508",
+                            IsActive = true,
+                            Name = "Mozambique"
+                        },
+                        new
+                        {
+                            ISOCountryId = 152,
+                            A2 = "MM",
+                            A3 = "MMR",
+                            Code = "104",
+                            IsActive = true,
+                            Name = "Myanmar"
+                        },
+                        new
+                        {
+                            ISOCountryId = 153,
+                            A2 = "NA",
+                            A3 = "NAM",
+                            Code = "516",
+                            IsActive = true,
+                            Name = "Namibia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 154,
+                            A2 = "NR",
+                            A3 = "NRU",
+                            Code = "520",
+                            IsActive = true,
+                            Name = "Nauru"
+                        },
+                        new
+                        {
+                            ISOCountryId = 155,
+                            A2 = "NP",
+                            A3 = "NPL",
+                            Code = "524",
+                            IsActive = true,
+                            Name = "Nepal"
+                        },
+                        new
+                        {
+                            ISOCountryId = 156,
+                            A2 = "NL",
+                            A3 = "NLD",
+                            Code = "528",
+                            IsActive = true,
+                            Name = "Netherlands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 157,
+                            A2 = "NC",
+                            A3 = "NCL",
+                            Code = "540",
+                            IsActive = true,
+                            Name = "New Caledonia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 158,
+                            A2 = "NZ",
+                            A3 = "NZL",
+                            Code = "554",
+                            IsActive = true,
+                            Name = "New Zealand"
+                        },
+                        new
+                        {
+                            ISOCountryId = 159,
+                            A2 = "NI",
+                            A3 = "NIC",
+                            Code = "558",
+                            IsActive = true,
+                            Name = "Nicaragua"
+                        },
+                        new
+                        {
+                            ISOCountryId = 160,
+                            A2 = "NE",
+                            A3 = "NER",
+                            Code = "562",
+                            IsActive = true,
+                            Name = "Niger (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 161,
+                            A2 = "NG",
+                            A3 = "NGA",
+                            Code = "566",
+                            IsActive = true,
+                            Name = "Nigeria"
+                        },
+                        new
+                        {
+                            ISOCountryId = 162,
+                            A2 = "NU",
+                            A3 = "NIU",
+                            Code = "570",
+                            IsActive = true,
+                            Name = "Niue"
+                        },
+                        new
+                        {
+                            ISOCountryId = 163,
+                            A2 = "NF",
+                            A3 = "NFK",
+                            Code = "574",
+                            IsActive = true,
+                            Name = "Norfolk Island"
+                        },
+                        new
+                        {
+                            ISOCountryId = 164,
+                            A2 = "MP",
+                            A3 = "MNP",
+                            Code = "580",
+                            IsActive = true,
+                            Name = "Northern Mariana Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 165,
+                            A2 = "NO",
+                            A3 = "NOR",
+                            Code = "578",
+                            IsActive = true,
+                            Name = "Norway"
+                        },
+                        new
+                        {
+                            ISOCountryId = 166,
+                            A2 = "OM",
+                            A3 = "OMN",
+                            Code = "512",
+                            IsActive = true,
+                            Name = "Oman"
+                        },
+                        new
+                        {
+                            ISOCountryId = 167,
+                            A2 = "PK",
+                            A3 = "PAK",
+                            Code = "586",
+                            IsActive = true,
+                            Name = "Pakistan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 168,
+                            A2 = "PW",
+                            A3 = "PLW",
+                            Code = "585",
+                            IsActive = true,
+                            Name = "Palau"
+                        },
+                        new
+                        {
+                            ISOCountryId = 169,
+                            A2 = "PS",
+                            A3 = "PSE",
+                            Code = "275",
+                            IsActive = true,
+                            Name = "Palestine, State of"
+                        },
+                        new
+                        {
+                            ISOCountryId = 170,
+                            A2 = "PA",
+                            A3 = "PAN",
+                            Code = "591",
+                            IsActive = true,
+                            Name = "Panama"
+                        },
+                        new
+                        {
+                            ISOCountryId = 171,
+                            A2 = "PG",
+                            A3 = "PNG",
+                            Code = "598",
+                            IsActive = true,
+                            Name = "Papua New Guinea"
+                        },
+                        new
+                        {
+                            ISOCountryId = 172,
+                            A2 = "PY",
+                            A3 = "PRY",
+                            Code = "600",
+                            IsActive = true,
+                            Name = "Paraguay"
+                        },
+                        new
+                        {
+                            ISOCountryId = 173,
+                            A2 = "PE",
+                            A3 = "PER",
+                            Code = "604",
+                            IsActive = true,
+                            Name = "Peru"
+                        },
+                        new
+                        {
+                            ISOCountryId = 174,
+                            A2 = "PH",
+                            A3 = "PHL",
+                            Code = "608",
+                            IsActive = true,
+                            Name = "Philippines (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 175,
+                            A2 = "PN",
+                            A3 = "PCN",
+                            Code = "612",
+                            IsActive = true,
+                            Name = "Pitcairn"
+                        },
+                        new
+                        {
+                            ISOCountryId = 176,
+                            A2 = "PL",
+                            A3 = "POL",
+                            Code = "616",
+                            IsActive = true,
+                            Name = "Poland"
+                        },
+                        new
+                        {
+                            ISOCountryId = 177,
+                            A2 = "PT",
+                            A3 = "PRT",
+                            Code = "620",
+                            IsActive = true,
+                            Name = "Portugal"
+                        },
+                        new
+                        {
+                            ISOCountryId = 178,
+                            A2 = "PR",
+                            A3 = "PRI",
+                            Code = "630",
+                            IsActive = true,
+                            Name = "Puerto Rico"
+                        },
+                        new
+                        {
+                            ISOCountryId = 179,
+                            A2 = "QA",
+                            A3 = "QAT",
+                            Code = "634",
+                            IsActive = true,
+                            Name = "Qatar"
+                        },
+                        new
+                        {
+                            ISOCountryId = 180,
+                            A2 = "MK",
+                            A3 = "MKD",
+                            Code = "807",
+                            IsActive = true,
+                            Name = "Republic of North Macedonia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 181,
+                            A2 = "RO",
+                            A3 = "ROU",
+                            Code = "642",
+                            IsActive = true,
+                            Name = "Romania"
+                        },
+                        new
+                        {
+                            ISOCountryId = 182,
+                            A2 = "RU",
+                            A3 = "RUS",
+                            Code = "643",
+                            IsActive = true,
+                            Name = "Russian Federation (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 183,
+                            A2 = "RW",
+                            A3 = "RWA",
+                            Code = "646",
+                            IsActive = true,
+                            Name = "Rwanda"
+                        },
+                        new
+                        {
+                            ISOCountryId = 184,
+                            A2 = "RE",
+                            A3 = "REU",
+                            Code = "638",
+                            IsActive = true,
+                            Name = "Réunion"
+                        },
+                        new
+                        {
+                            ISOCountryId = 185,
+                            A2 = "BL",
+                            A3 = "BLM",
+                            Code = "652",
+                            IsActive = true,
+                            Name = "Saint Barthélemy"
+                        },
+                        new
+                        {
+                            ISOCountryId = 186,
+                            A2 = "SH",
+                            A3 = "SHN",
+                            Code = "654",
+                            IsActive = true,
+                            Name = "Saint Helena, Ascension and Tristan da Cunha"
+                        },
+                        new
+                        {
+                            ISOCountryId = 187,
+                            A2 = "KN",
+                            A3 = "KNA",
+                            Code = "659",
+                            IsActive = true,
+                            Name = "Saint Kitts and Nevis"
+                        },
+                        new
+                        {
+                            ISOCountryId = 188,
+                            A2 = "LC",
+                            A3 = "LCA",
+                            Code = "662",
+                            IsActive = true,
+                            Name = "Saint Lucia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 189,
+                            A2 = "MF",
+                            A3 = "MAF",
+                            Code = "663",
+                            IsActive = true,
+                            Name = "Saint Martin (French part)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 190,
+                            A2 = "PM",
+                            A3 = "SPM",
+                            Code = "666",
+                            IsActive = true,
+                            Name = "Saint Pierre and Miquelon"
+                        },
+                        new
+                        {
+                            ISOCountryId = 191,
+                            A2 = "VC",
+                            A3 = "VCT",
+                            Code = "670",
+                            IsActive = true,
+                            Name = "Saint Vincent and the Grenadines"
+                        },
+                        new
+                        {
+                            ISOCountryId = 192,
+                            A2 = "WS",
+                            A3 = "WSM",
+                            Code = "882",
+                            IsActive = true,
+                            Name = "Samoa"
+                        },
+                        new
+                        {
+                            ISOCountryId = 193,
+                            A2 = "SM",
+                            A3 = "SMR",
+                            Code = "674",
+                            IsActive = true,
+                            Name = "San Marino"
+                        },
+                        new
+                        {
+                            ISOCountryId = 194,
+                            A2 = "ST",
+                            A3 = "STP",
+                            Code = "678",
+                            IsActive = true,
+                            Name = "Sao Tome and Principe"
+                        },
+                        new
+                        {
+                            ISOCountryId = 195,
+                            A2 = "SA",
+                            A3 = "SAU",
+                            Code = "682",
+                            IsActive = true,
+                            Name = "Saudi Arabia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 196,
+                            A2 = "SN",
+                            A3 = "SEN",
+                            Code = "686",
+                            IsActive = true,
+                            Name = "Senegal"
+                        },
+                        new
+                        {
+                            ISOCountryId = 197,
+                            A2 = "RS",
+                            A3 = "SRB",
+                            Code = "688",
+                            IsActive = true,
+                            Name = "Serbia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 198,
+                            A2 = "SC",
+                            A3 = "SYC",
+                            Code = "690",
+                            IsActive = true,
+                            Name = "Seychelles"
+                        },
+                        new
+                        {
+                            ISOCountryId = 199,
+                            A2 = "SL",
+                            A3 = "SLE",
+                            Code = "694",
+                            IsActive = true,
+                            Name = "Sierra Leone"
+                        },
+                        new
+                        {
+                            ISOCountryId = 200,
+                            A2 = "SG",
+                            A3 = "SGP",
+                            Code = "702",
+                            IsActive = true,
+                            Name = "Singapore"
+                        },
+                        new
+                        {
+                            ISOCountryId = 201,
+                            A2 = "SX",
+                            A3 = "SXM",
+                            Code = "534",
+                            IsActive = true,
+                            Name = "Sint Maarten (Dutch part)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 202,
+                            A2 = "SK",
+                            A3 = "SVK",
+                            Code = "703",
+                            IsActive = true,
+                            Name = "Slovakia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 203,
+                            A2 = "SI",
+                            A3 = "SVN",
+                            Code = "705",
+                            IsActive = true,
+                            Name = "Slovenia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 204,
+                            A2 = "SB",
+                            A3 = "SLB",
+                            Code = "90",
+                            IsActive = true,
+                            Name = "Solomon Islands"
+                        },
+                        new
+                        {
+                            ISOCountryId = 205,
+                            A2 = "SO",
+                            A3 = "SOM",
+                            Code = "706",
+                            IsActive = true,
+                            Name = "Somalia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 206,
+                            A2 = "ZA",
+                            A3 = "ZAF",
+                            Code = "710",
+                            IsActive = true,
+                            Name = "South Africa"
+                        },
+                        new
+                        {
+                            ISOCountryId = 207,
+                            A2 = "GS",
+                            A3 = "SGS",
+                            Code = "239",
+                            IsActive = true,
+                            Name = "South Georgia and the South Sandwich Islands"
+                        },
+                        new
+                        {
+                            ISOCountryId = 208,
+                            A2 = "SS",
+                            A3 = "SSD",
+                            Code = "728",
+                            IsActive = true,
+                            Name = "South Sudan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 209,
+                            A2 = "ES",
+                            A3 = "ESP",
+                            Code = "724",
+                            IsActive = true,
+                            Name = "Spain"
+                        },
+                        new
+                        {
+                            ISOCountryId = 210,
+                            A2 = "LK",
+                            A3 = "LKA",
+                            Code = "144",
+                            IsActive = true,
+                            Name = "Sri Lanka"
+                        },
+                        new
+                        {
+                            ISOCountryId = 211,
+                            A2 = "SD",
+                            A3 = "SDN",
+                            Code = "729",
+                            IsActive = true,
+                            Name = "Sudan (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 212,
+                            A2 = "SR",
+                            A3 = "SUR",
+                            Code = "740",
+                            IsActive = true,
+                            Name = "Suriname"
+                        },
+                        new
+                        {
+                            ISOCountryId = 213,
+                            A2 = "SJ",
+                            A3 = "SJM",
+                            Code = "744",
+                            IsActive = true,
+                            Name = "Svalbard and Jan Mayen"
+                        },
+                        new
+                        {
+                            ISOCountryId = 214,
+                            A2 = "SE",
+                            A3 = "SWE",
+                            Code = "752",
+                            IsActive = true,
+                            Name = "Sweden"
+                        },
+                        new
+                        {
+                            ISOCountryId = 215,
+                            A2 = "CH",
+                            A3 = "CHE",
+                            Code = "756",
+                            IsActive = true,
+                            Name = "Switzerland"
+                        },
+                        new
+                        {
+                            ISOCountryId = 216,
+                            A2 = "SY",
+                            A3 = "SYR",
+                            Code = "760",
+                            IsActive = true,
+                            Name = "Syrian Arab Republic"
+                        },
+                        new
+                        {
+                            ISOCountryId = 217,
+                            A2 = "TW",
+                            A3 = "TWN",
+                            Code = "158",
+                            IsActive = true,
+                            Name = "Taiwan (Province of China)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 218,
+                            A2 = "TJ",
+                            A3 = "TJK",
+                            Code = "762",
+                            IsActive = true,
+                            Name = "Tajikistan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 219,
+                            A2 = "TZ",
+                            A3 = "TZA",
+                            Code = "834",
+                            IsActive = true,
+                            Name = "Tanzania, United Republic of"
+                        },
+                        new
+                        {
+                            ISOCountryId = 220,
+                            A2 = "TH",
+                            A3 = "THA",
+                            Code = "764",
+                            IsActive = true,
+                            Name = "Thailand"
+                        },
+                        new
+                        {
+                            ISOCountryId = 221,
+                            A2 = "TL",
+                            A3 = "TLS",
+                            Code = "626",
+                            IsActive = true,
+                            Name = "Timor-Leste"
+                        },
+                        new
+                        {
+                            ISOCountryId = 222,
+                            A2 = "TG",
+                            A3 = "TGO",
+                            Code = "768",
+                            IsActive = true,
+                            Name = "Togo"
+                        },
+                        new
+                        {
+                            ISOCountryId = 223,
+                            A2 = "TK",
+                            A3 = "TKL",
+                            Code = "772",
+                            IsActive = true,
+                            Name = "Tokelau"
+                        },
+                        new
+                        {
+                            ISOCountryId = 224,
+                            A2 = "TO",
+                            A3 = "TON",
+                            Code = "776",
+                            IsActive = true,
+                            Name = "Tonga"
+                        },
+                        new
+                        {
+                            ISOCountryId = 225,
+                            A2 = "TT",
+                            A3 = "TTO",
+                            Code = "780",
+                            IsActive = true,
+                            Name = "Trinidad and Tobago"
+                        },
+                        new
+                        {
+                            ISOCountryId = 226,
+                            A2 = "TN",
+                            A3 = "TUN",
+                            Code = "788",
+                            IsActive = true,
+                            Name = "Tunisia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 227,
+                            A2 = "TR",
+                            A3 = "TUR",
+                            Code = "792",
+                            IsActive = true,
+                            Name = "Turkey"
+                        },
+                        new
+                        {
+                            ISOCountryId = 228,
+                            A2 = "TM",
+                            A3 = "TKM",
+                            Code = "795",
+                            IsActive = true,
+                            Name = "Turkmenistan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 229,
+                            A2 = "TC",
+                            A3 = "TCA",
+                            Code = "796",
+                            IsActive = true,
+                            Name = "Turks and Caicos Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 230,
+                            A2 = "TV",
+                            A3 = "TUV",
+                            Code = "798",
+                            IsActive = true,
+                            Name = "Tuvalu"
+                        },
+                        new
+                        {
+                            ISOCountryId = 231,
+                            A2 = "UG",
+                            A3 = "UGA",
+                            Code = "800",
+                            IsActive = true,
+                            Name = "Uganda"
+                        },
+                        new
+                        {
+                            ISOCountryId = 232,
+                            A2 = "UA",
+                            A3 = "UKR",
+                            Code = "804",
+                            IsActive = true,
+                            Name = "Ukraine"
+                        },
+                        new
+                        {
+                            ISOCountryId = 233,
+                            A2 = "AE",
+                            A3 = "ARE",
+                            Code = "784",
+                            IsActive = true,
+                            Name = "United Arab Emirates (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 234,
+                            A2 = "GB",
+                            A3 = "GBR",
+                            Code = "826",
+                            IsActive = true,
+                            Name = "United Kingdom of Great Britain and Northern Ireland (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 235,
+                            A2 = "UM",
+                            A3 = "UMI",
+                            Code = "581",
+                            IsActive = true,
+                            Name = "United States Minor Outlying Islands (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 236,
+                            A2 = "US",
+                            A3 = "USA",
+                            Code = "840",
+                            IsActive = true,
+                            Name = "United States of America (the)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 237,
+                            A2 = "UY",
+                            A3 = "URY",
+                            Code = "858",
+                            IsActive = true,
+                            Name = "Uruguay"
+                        },
+                        new
+                        {
+                            ISOCountryId = 238,
+                            A2 = "UZ",
+                            A3 = "UZB",
+                            Code = "860",
+                            IsActive = true,
+                            Name = "Uzbekistan"
+                        },
+                        new
+                        {
+                            ISOCountryId = 239,
+                            A2 = "VU",
+                            A3 = "VUT",
+                            Code = "548",
+                            IsActive = true,
+                            Name = "Vanuatu"
+                        },
+                        new
+                        {
+                            ISOCountryId = 240,
+                            A2 = "VE",
+                            A3 = "VEN",
+                            Code = "862",
+                            IsActive = true,
+                            Name = "Venezuela (Bolivarian Republic of)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 241,
+                            A2 = "VN",
+                            A3 = "VNM",
+                            Code = "704",
+                            IsActive = true,
+                            Name = "Viet Nam"
+                        },
+                        new
+                        {
+                            ISOCountryId = 242,
+                            A2 = "VG",
+                            A3 = "VGB",
+                            Code = "92",
+                            IsActive = true,
+                            Name = "Virgin Islands (British)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 243,
+                            A2 = "VI",
+                            A3 = "VIR",
+                            Code = "850",
+                            IsActive = true,
+                            Name = "Virgin Islands (U.S.)"
+                        },
+                        new
+                        {
+                            ISOCountryId = 244,
+                            A2 = "WF",
+                            A3 = "WLF",
+                            Code = "876",
+                            IsActive = true,
+                            Name = "Wallis and Futuna"
+                        },
+                        new
+                        {
+                            ISOCountryId = 245,
+                            A2 = "EH",
+                            A3 = "ESH",
+                            Code = "732",
+                            IsActive = true,
+                            Name = "Western Sahara"
+                        },
+                        new
+                        {
+                            ISOCountryId = 246,
+                            A2 = "YE",
+                            A3 = "YEM",
+                            Code = "887",
+                            IsActive = true,
+                            Name = "Yemen"
+                        },
+                        new
+                        {
+                            ISOCountryId = 247,
+                            A2 = "ZM",
+                            A3 = "ZMB",
+                            Code = "894",
+                            IsActive = true,
+                            Name = "Zambia"
+                        },
+                        new
+                        {
+                            ISOCountryId = 248,
+                            A2 = "ZW",
+                            A3 = "ZWE",
+                            Code = "716",
+                            IsActive = true,
+                            Name = "Zimbabwe"
+                        },
+                        new
+                        {
+                            ISOCountryId = 249,
+                            A2 = "AX",
+                            A3 = "ALA",
+                            Code = "248",
+                            IsActive = true,
+                            Name = "Åland Islands"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.IdentificationType", b =>
@@ -652,6 +12082,29 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasKey("IdentificationTypeId");
 
                     b.ToTable("IdentificationTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            IdentificationTypeId = 1,
+                            Code1 = "CC",
+                            IsActive = true,
+                            Name = "Cédula de ciudadanía"
+                        },
+                        new
+                        {
+                            IdentificationTypeId = 2,
+                            Code1 = "CC",
+                            IsActive = true,
+                            Name = "Cédula de extranjería"
+                        },
+                        new
+                        {
+                            IdentificationTypeId = 3,
+                            Code1 = "PP",
+                            IsActive = true,
+                            Name = "Pasaporte"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.Location", b =>
@@ -684,6 +12137,56 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("TerminalId");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            LocationId = 1,
+                            FisicalLocation = "MZ1 Bodega 1",
+                            IsActive = true,
+                            Name = "Gate 1.1",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            LocationId = 2,
+                            FisicalLocation = "MZ1 Bodega 2",
+                            IsActive = true,
+                            Name = "Gate 1.2",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            LocationId = 3,
+                            FisicalLocation = "MZ1 Bodega 3",
+                            IsActive = true,
+                            Name = "Gate 2.1",
+                            TerminalId = 1
+                        },
+                        new
+                        {
+                            LocationId = 4,
+                            FisicalLocation = "Bodega 1",
+                            IsActive = true,
+                            Name = "Puerto 1",
+                            TerminalId = 2
+                        },
+                        new
+                        {
+                            LocationId = 5,
+                            FisicalLocation = "Bodega 2",
+                            IsActive = true,
+                            Name = "Puerto 1",
+                            TerminalId = 2
+                        },
+                        new
+                        {
+                            LocationId = 6,
+                            FisicalLocation = "Bodega 1",
+                            IsActive = true,
+                            Name = "Puerto 2",
+                            TerminalId = 2
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.Mission", b =>
@@ -705,9 +12208,6 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<bool>("IsAchieved")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -727,6 +12227,35 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("LastUpdatedUserId");
 
                     b.ToTable("Missions");
+
+                    b.HasData(
+                        new
+                        {
+                            MissionId = 1,
+                            CreatedDate = new DateTime(2025, 2, 28, 1, 32, 39, 133, DateTimeKind.Utc).AddTicks(341),
+                            CreatedUserId = new Guid("8f7ef30e-ff2a-447b-9677-c866240d366f"),
+                            Description = "Llegar a tiempo",
+                            IsActive = true,
+                            Points = 10m
+                        },
+                        new
+                        {
+                            MissionId = 2,
+                            CreatedDate = new DateTime(2025, 2, 28, 1, 32, 39, 133, DateTimeKind.Utc).AddTicks(343),
+                            CreatedUserId = new Guid("8f7ef30e-ff2a-447b-9677-c866240d366f"),
+                            Description = "Salir a tiempo",
+                            IsActive = true,
+                            Points = 10m
+                        },
+                        new
+                        {
+                            MissionId = 3,
+                            CreatedDate = new DateTime(2025, 2, 28, 1, 32, 39, 133, DateTimeKind.Utc).AddTicks(344),
+                            CreatedUserId = new Guid("8f7ef30e-ff2a-447b-9677-c866240d366f"),
+                            Description = "Documentación completa",
+                            IsActive = true,
+                            Points = 10m
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.MissionAppointmet", b =>
@@ -736,6 +12265,9 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
 
                     b.Property<Guid>("AppointmentId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsAchieved")
+                        .HasColumnType("bit");
 
                     b.HasKey("MissionId", "AppointmentId");
 
@@ -764,6 +12296,50 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasKey("OperatorId");
 
                     b.ToTable("Operators");
+
+                    b.HasData(
+                        new
+                        {
+                            OperatorId = 1L,
+                            IsActive = true,
+                            Name = "Sociedad Portuaria Regional de Cartagena (SPRC)"
+                        },
+                        new
+                        {
+                            OperatorId = 2L,
+                            IsActive = true,
+                            Name = "Grupo Puerto de Buenaventura"
+                        },
+                        new
+                        {
+                            OperatorId = 3L,
+                            IsActive = true,
+                            Name = "Sociedad Portuaria de Santa Marta"
+                        },
+                        new
+                        {
+                            OperatorId = 4L,
+                            IsActive = true,
+                            Name = "Sociedad Portuaria de Barranquilla"
+                        },
+                        new
+                        {
+                            OperatorId = 5L,
+                            IsActive = true,
+                            Name = "Grupo PSA International"
+                        },
+                        new
+                        {
+                            OperatorId = 6L,
+                            IsActive = true,
+                            Name = "Sociedad Portuaria de Turbo"
+                        },
+                        new
+                        {
+                            OperatorId = 7L,
+                            IsActive = true,
+                            Name = "Sociedad Portuaria de Tumaco"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.Provider", b =>
@@ -815,6 +12391,38 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Providers");
+
+                    b.HasData(
+                        new
+                        {
+                            ProviderId = new Guid("2d23aa6c-f504-4b18-9e4e-256632d84b08"),
+                            ContactName = "Luis Mazorca",
+                            ContactPhone = "3101234567",
+                            FiscalAddress = "5° Avenue, green house tower",
+                            FiscalNumber = "9632587",
+                            IsActive = true,
+                            UserId = new Guid("229c4d76-0bf2-45ce-b0e8-f51d0373bd29")
+                        },
+                        new
+                        {
+                            ProviderId = new Guid("cb7a5166-b31d-483d-ac91-6bff3b3c7acf"),
+                            ContactName = "Nicolas Laiton",
+                            ContactPhone = "3107412589",
+                            FiscalAddress = "Calle 123 #125",
+                            FiscalNumber = "7845963",
+                            IsActive = true,
+                            UserId = new Guid("7c53c90e-2990-4a54-ac38-2aa981288f9e")
+                        },
+                        new
+                        {
+                            ProviderId = new Guid("2369a424-35b5-4999-855a-b322e8c06f7b"),
+                            ContactName = "Raul Castro",
+                            ContactPhone = "3108745324",
+                            FiscalAddress = "Calle Faalsa 123",
+                            FiscalNumber = "1122448",
+                            IsActive = true,
+                            UserId = new Guid("fa0f0ff8-f46f-41e9-9ae0-43144b7289b7")
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.State", b =>
@@ -852,15 +12460,245 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasKey("StateId");
 
                     b.ToTable("States");
+
+                    b.HasData(
+                        new
+                        {
+                            StateId = 1,
+                            Code1 = "05",
+                            IsActive = true,
+                            Name = "ANTIOQUIA"
+                        },
+                        new
+                        {
+                            StateId = 2,
+                            Code1 = "08",
+                            IsActive = true,
+                            Name = "ATLÁNTICO"
+                        },
+                        new
+                        {
+                            StateId = 3,
+                            Code1 = "11",
+                            IsActive = true,
+                            Name = "BOGOTÁ, D.C."
+                        },
+                        new
+                        {
+                            StateId = 4,
+                            Code1 = "13",
+                            IsActive = true,
+                            Name = "BOLÍVAR"
+                        },
+                        new
+                        {
+                            StateId = 5,
+                            Code1 = "15",
+                            IsActive = true,
+                            Name = "BOYACÁ"
+                        },
+                        new
+                        {
+                            StateId = 6,
+                            Code1 = "17",
+                            IsActive = true,
+                            Name = "CALDAS"
+                        },
+                        new
+                        {
+                            StateId = 7,
+                            Code1 = "18",
+                            IsActive = true,
+                            Name = "CAQUETÁ"
+                        },
+                        new
+                        {
+                            StateId = 8,
+                            Code1 = "19",
+                            IsActive = true,
+                            Name = "CAUCA"
+                        },
+                        new
+                        {
+                            StateId = 9,
+                            Code1 = "20",
+                            IsActive = true,
+                            Name = "CESAR"
+                        },
+                        new
+                        {
+                            StateId = 10,
+                            Code1 = "23",
+                            IsActive = true,
+                            Name = "CÓRDOBA"
+                        },
+                        new
+                        {
+                            StateId = 11,
+                            Code1 = "25",
+                            IsActive = true,
+                            Name = "CUNDINAMARCA"
+                        },
+                        new
+                        {
+                            StateId = 12,
+                            Code1 = "27",
+                            IsActive = true,
+                            Name = "CHOCÓ"
+                        },
+                        new
+                        {
+                            StateId = 13,
+                            Code1 = "41",
+                            IsActive = true,
+                            Name = "HUILA"
+                        },
+                        new
+                        {
+                            StateId = 14,
+                            Code1 = "44",
+                            IsActive = true,
+                            Name = "LA GUAJIRA"
+                        },
+                        new
+                        {
+                            StateId = 15,
+                            Code1 = "47",
+                            IsActive = true,
+                            Name = "MAGDALENA"
+                        },
+                        new
+                        {
+                            StateId = 16,
+                            Code1 = "50",
+                            IsActive = true,
+                            Name = "META"
+                        },
+                        new
+                        {
+                            StateId = 17,
+                            Code1 = "52",
+                            IsActive = true,
+                            Name = "NARIÑO"
+                        },
+                        new
+                        {
+                            StateId = 18,
+                            Code1 = "54",
+                            IsActive = true,
+                            Name = "NORTE DE SANTANDER"
+                        },
+                        new
+                        {
+                            StateId = 19,
+                            Code1 = "63",
+                            IsActive = true,
+                            Name = "QUINDÍO"
+                        },
+                        new
+                        {
+                            StateId = 20,
+                            Code1 = "66",
+                            IsActive = true,
+                            Name = "RISARALDA"
+                        },
+                        new
+                        {
+                            StateId = 21,
+                            Code1 = "68",
+                            IsActive = true,
+                            Name = "SANTANDER"
+                        },
+                        new
+                        {
+                            StateId = 22,
+                            Code1 = "70",
+                            IsActive = true,
+                            Name = "SUCRE"
+                        },
+                        new
+                        {
+                            StateId = 23,
+                            Code1 = "73",
+                            IsActive = true,
+                            Name = "TOLIMA"
+                        },
+                        new
+                        {
+                            StateId = 24,
+                            Code1 = "76",
+                            IsActive = true,
+                            Name = "VALLE DEL CAUCA"
+                        },
+                        new
+                        {
+                            StateId = 25,
+                            Code1 = "81",
+                            IsActive = true,
+                            Name = "ARAUCA"
+                        },
+                        new
+                        {
+                            StateId = 26,
+                            Code1 = "85",
+                            IsActive = true,
+                            Name = "CASANARE"
+                        },
+                        new
+                        {
+                            StateId = 27,
+                            Code1 = "86",
+                            IsActive = true,
+                            Name = "PUTUMAYO"
+                        },
+                        new
+                        {
+                            StateId = 28,
+                            Code1 = "88",
+                            IsActive = true,
+                            Name = "ARCHIPIÉLAGO DE SAN ANDRÉS, PROVIDENCIA Y SANTA CATALINA"
+                        },
+                        new
+                        {
+                            StateId = 29,
+                            Code1 = "91",
+                            IsActive = true,
+                            Name = "AMAZONAS"
+                        },
+                        new
+                        {
+                            StateId = 30,
+                            Code1 = "94",
+                            IsActive = true,
+                            Name = "GUAINÍA"
+                        },
+                        new
+                        {
+                            StateId = 31,
+                            Code1 = "95",
+                            IsActive = true,
+                            Name = "GUAVIARE"
+                        },
+                        new
+                        {
+                            StateId = 32,
+                            Code1 = "97",
+                            IsActive = true,
+                            Name = "VAUPÉS"
+                        },
+                        new
+                        {
+                            StateId = 33,
+                            Code1 = "99",
+                            IsActive = true,
+                            Name = "VICHADA"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.SuperPower", b =>
                 {
                     b.Property<Guid>("SuperPowerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CreatedByUserIdUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -890,16 +12728,35 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<Guid?>("UpdatedByUserIdUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("SuperPowerId");
 
-                    b.HasIndex("CreatedByUserIdUserId");
+                    b.HasIndex("CreatedUserId");
 
-                    b.HasIndex("UpdatedByUserIdUserId");
+                    b.HasIndex("LastUpdatedUserId");
 
                     b.ToTable("SuperPowers");
+
+                    b.HasData(
+                        new
+                        {
+                            SuperPowerId = new Guid("a8461b80-3d84-4622-b6c5-0fd42ca07852"),
+                            CreatedDate = new DateTime(2025, 2, 28, 1, 32, 39, 133, DateTimeKind.Utc).AddTicks(194),
+                            CreatedUserId = new Guid("ea956473-865a-490b-abbf-767b0b67fd7c"),
+                            IsActive = false,
+                            MinutesDuaration = 172800,
+                            MultiplierFactor = 0.1m,
+                            Name = "Turbito 10%"
+                        },
+                        new
+                        {
+                            SuperPowerId = new Guid("1513d304-55c4-4066-b74d-01177c23e965"),
+                            CreatedDate = new DateTime(2025, 2, 28, 1, 32, 39, 133, DateTimeKind.Utc).AddTicks(196),
+                            CreatedUserId = new Guid("ea956473-865a-490b-abbf-767b0b67fd7c"),
+                            IsActive = false,
+                            MinutesDuaration = 86400,
+                            MultiplierFactor = 0.15m,
+                            Name = "Turbito 15%"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.SuperPowerUser", b =>
@@ -974,6 +12831,71 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("OperatorId");
 
                     b.ToTable("Terminals");
+
+                    b.HasData(
+                        new
+                        {
+                            TerminalId = 1,
+                            GeographicLocationCityId = 150,
+                            IsActive = true,
+                            Name = "Terminal de Contenedores de Cartagena (Contecar)",
+                            OperatorId = 1L,
+                            Url = "https://www.puertocartagena.com/es/sprc-online"
+                        },
+                        new
+                        {
+                            TerminalId = 2,
+                            GeographicLocationCityId = 1013,
+                            IsActive = true,
+                            Name = "Terminal de Contenedores de Buenaventura (TCBUEN)",
+                            OperatorId = 2L,
+                            Url = "https://www.apmterminals.com/es/buenaventura"
+                        },
+                        new
+                        {
+                            TerminalId = 3,
+                            GeographicLocationCityId = 658,
+                            IsActive = true,
+                            Name = "Terminal de Contenedores de Santa Marta (TCSM)",
+                            OperatorId = 3L,
+                            Url = "https://www.spsm.com.co/terminales/terminales"
+                        },
+                        new
+                        {
+                            TerminalId = 4,
+                            GeographicLocationCityId = 126,
+                            IsActive = true,
+                            Name = "Terminal de Contenedores de Barranquilla (TCPA)",
+                            OperatorId = 4L,
+                            Url = "https://www.puertodebarranquilla.com/"
+                        },
+                        new
+                        {
+                            TerminalId = 5,
+                            GeographicLocationCityId = 126,
+                            IsActive = true,
+                            Name = "Terminal de Contenedores de la Costa Atlántica (TCA)",
+                            OperatorId = 5L,
+                            Url = "https://www.globalpsa.com/"
+                        },
+                        new
+                        {
+                            TerminalId = 6,
+                            GeographicLocationCityId = 113,
+                            IsActive = true,
+                            Name = "Terminal de Contenedores de Turbo (TCT)",
+                            OperatorId = 6L,
+                            Url = "https://puertoantioquia.com.co/"
+                        },
+                        new
+                        {
+                            TerminalId = 7,
+                            GeographicLocationCityId = 778,
+                            IsActive = true,
+                            Name = "Terminal de Contenedores de Tumaco (TCTUM)",
+                            OperatorId = 7L,
+                            Url = "https://www.ani.gov.co/zonas-portuarias/zona-portuaria-de-tumaco"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.TerminalOperator", b =>
@@ -993,6 +12915,14 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("TerminalOperators");
+
+                    b.HasData(
+                        new
+                        {
+                            TerminalOperatorId = new Guid("02180a26-859c-487f-b6c1-580b41c47e71"),
+                            IsActive = true,
+                            UserId = new Guid("8f7ef30e-ff2a-447b-9677-c866240d366f")
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.TypeContainer", b =>
@@ -1021,6 +12951,92 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasKey("TypeContainerId");
 
                     b.ToTable("TypeContainers");
+
+                    b.HasData(
+                        new
+                        {
+                            TypeContainerId = 1,
+                            Code = "05",
+                            Description = "Refrigerado",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 2,
+                            Code = "22",
+                            Description = "Seco 20ft",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 3,
+                            Code = "25",
+                            Description = "Seco 20ft High Cube",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 4,
+                            Code = "42",
+                            Description = "Seco 40ft",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 5,
+                            Code = "43",
+                            Description = "Seco 40ft High Cube",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 6,
+                            Code = "45",
+                            Description = "Seco 40ft Pallet Wide",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 7,
+                            Code = "53",
+                            Description = "Seco 45ft High Cube",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 8,
+                            Code = "63",
+                            Description = "Tanque 20ft",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 9,
+                            Code = "66",
+                            Description = "Tanque 40ft",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 10,
+                            Code = "82",
+                            Description = "Plataforma 20ft",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 11,
+                            Code = "85",
+                            Description = "Plataforma 40ft",
+                            IsActive = true
+                        },
+                        new
+                        {
+                            TypeContainerId = 99,
+                            Code = "99",
+                            Description = "Desconocido",
+                            IsActive = true
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.User", b =>
@@ -1066,6 +13082,63 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("ea956473-865a-490b-abbf-767b0b67fd7c"),
+                            CategoryId = 1,
+                            IsActive = true,
+                            Name = "Cristian Moreno",
+                            Password = "Contraseña123",
+                            UserName = "crmorenob@unal.edu.co"
+                        },
+                        new
+                        {
+                            UserId = new Guid("8f7ef30e-ff2a-447b-9677-c866240d366f"),
+                            CategoryId = 9,
+                            IsActive = true,
+                            Name = "Cindy Orjuela",
+                            Password = "Contraseña123",
+                            TerminalId = 1,
+                            UserName = "corjuelaa@unal.edu.co"
+                        },
+                        new
+                        {
+                            UserId = new Guid("229c4d76-0bf2-45ce-b0e8-f51d0373bd29"),
+                            CategoryId = 1,
+                            IsActive = true,
+                            Name = "Sociedad Portuaria de Buenaventura (SPB)",
+                            Password = "Contraseña123",
+                            UserName = "spb@unal.edu.co"
+                        },
+                        new
+                        {
+                            UserId = new Guid("7c53c90e-2990-4a54-ac38-2aa981288f9e"),
+                            CategoryId = 2,
+                            IsActive = true,
+                            Name = "Sociedad Portuaria Regional de Cartagena (SPRC)",
+                            Password = "Contraseña123",
+                            UserName = "sprc@unal.edu.co"
+                        },
+                        new
+                        {
+                            UserId = new Guid("fa0f0ff8-f46f-41e9-9ae0-43144b7289b7"),
+                            CategoryId = 3,
+                            IsActive = true,
+                            Name = "TCC (Transporte de Carga Colombiano)",
+                            Password = "Contraseña123",
+                            UserName = "tcc@unal.edu.co"
+                        },
+                        new
+                        {
+                            UserId = new Guid("3b02d1a6-f927-4c61-afb6-50d6c00f5add"),
+                            CategoryId = 4,
+                            IsActive = true,
+                            Name = "Colombian Logistics Solutions (CLS)",
+                            Password = "Contraseña123",
+                            UserName = "cls@unal.edu.co"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.Wallet", b =>
@@ -1086,6 +13159,20 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasKey("WalletId");
 
                     b.ToTable("Wallets");
+
+                    b.HasData(
+                        new
+                        {
+                            WalletId = new Guid("ee2b3a84-43b1-46cf-b29e-7ad4db5a2000"),
+                            IsActive = true,
+                            Name = "General"
+                        },
+                        new
+                        {
+                            WalletId = new Guid("2767eaa8-b36c-4b28-85ff-64aca70aac5c"),
+                            IsActive = true,
+                            Name = "General"
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.WalletUser", b =>
@@ -1104,6 +13191,20 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WalletUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            WalletId = new Guid("ee2b3a84-43b1-46cf-b29e-7ad4db5a2000"),
+                            UserId = new Guid("ea956473-865a-490b-abbf-767b0b67fd7c"),
+                            Balance = 10m
+                        },
+                        new
+                        {
+                            WalletId = new Guid("2767eaa8-b36c-4b28-85ff-64aca70aac5c"),
+                            UserId = new Guid("8f7ef30e-ff2a-447b-9677-c866240d366f"),
+                            Balance = 200m
+                        });
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.Appointment", b =>
@@ -1386,19 +13487,19 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.SuperPower", b =>
                 {
-                    b.HasOne("UnalColombia.Logistic.TAS.Domain.Entities.User", "CreatedByUserId")
-                        .WithMany()
-                        .HasForeignKey("CreatedByUserIdUserId")
+                    b.HasOne("UnalColombia.Logistic.TAS.Domain.Entities.User", "CreatedByUser")
+                        .WithMany("CreatedSuperPowers")
+                        .HasForeignKey("CreatedUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UnalColombia.Logistic.TAS.Domain.Entities.User", "UpdatedByUserId")
-                        .WithMany()
-                        .HasForeignKey("UpdatedByUserIdUserId");
+                    b.HasOne("UnalColombia.Logistic.TAS.Domain.Entities.User", "UpdatedByUser")
+                        .WithMany("UpdatedSuperPowers")
+                        .HasForeignKey("LastUpdatedUserId");
 
-                    b.Navigation("CreatedByUserId");
+                    b.Navigation("CreatedByUser");
 
-                    b.Navigation("UpdatedByUserId");
+                    b.Navigation("UpdatedByUser");
                 });
 
             modelBuilder.Entity("UnalColombia.Logistic.TAS.Domain.Entities.SuperPowerUser", b =>
@@ -1593,6 +13694,8 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
 
                     b.Navigation("CreatedSuperPowerByUserList");
 
+                    b.Navigation("CreatedSuperPowers");
+
                     b.Navigation("Drivers");
 
                     b.Navigation("HistoryPoints");
@@ -1612,6 +13715,8 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.Migrations
                     b.Navigation("UpdatedMissions");
 
                     b.Navigation("UpdatedSuperPowerByUserList");
+
+                    b.Navigation("UpdatedSuperPowers");
 
                     b.Navigation("WalledByUsers");
                 });

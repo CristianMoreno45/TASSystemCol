@@ -27,10 +27,10 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.EntityConfiguration
                 .IsUnicode(false);
 
             entity.Property(e => e.StartTime)
-                .HasColumnType("time");
+                .HasColumnType("datetime");
 
             entity.Property(e => e.FinishTime)
-                .HasColumnType("time");
+                .HasColumnType("datetime");
 
             entity.HasOne(e => e.AppointmentState)
                 .WithMany(m => m.Appointments)

@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Reflection.Emit;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using UnalColombia.Common.Interfaces;
 
 namespace UnalColombia.Common.API
 {
@@ -32,8 +35,18 @@ namespace UnalColombia.Common.API
             {
                 var entity = await db.Set<T>().FindAsync(id);
                 if (entity == null) return Results.NotFound();
-                db.Set<T>().Remove(entity);
-                await db.SaveChangesAsync();
+                // Configuración para entidades activables
+                if (entity is IActivatable)
+                {
+                    ((IActivatable)entity).IsActive = false;
+                    db.Set<T>().Update(entity);
+                    await db.SaveChangesAsync();
+                }
+                else
+                {
+                    db.Set<T>().Remove(entity);
+                    await db.SaveChangesAsync();
+                }
                 return Results.NoContent();
             });
         }

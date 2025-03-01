@@ -4,7 +4,7 @@
     {
         public int MissionId { get; set; }
         public Guid AppointmentId { get; set; }
-
+        public bool IsAchieved { get; set; }
         public virtual Mission Mission { get; set; }    
         public virtual Appointment Appointment { get; set; }
     }

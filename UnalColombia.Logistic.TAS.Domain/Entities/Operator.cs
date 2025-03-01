@@ -6,7 +6,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
     {
         public long OperatorId { get; set; }
         public string Name { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         public virtual ICollection<Terminal>? Terminals { get; set; }
 
     }

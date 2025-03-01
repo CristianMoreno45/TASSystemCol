@@ -7,7 +7,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public Guid PointHistoryId { get; set; }
         public Guid UserId { get; set; }
         public Guid WalletId { get; set; }
-        public Guid SuperPowerId { get; set; }
+        public Guid? SuperPowerId { get; set; }
 
         public string Description { get; set; }
         public decimal Points { get; set; }

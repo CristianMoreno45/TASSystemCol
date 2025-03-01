@@ -9,7 +9,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public string A2 { get; set; }
         public string A3 { get; set; }
         public string Code { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual ICollection<CargoInformation>? OriginCargoInformationList { get; set; }
         public virtual ICollection<CargoInformation>? DestinationCargoInformationList { get; set; }

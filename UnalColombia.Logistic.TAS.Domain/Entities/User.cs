@@ -10,7 +10,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public string Name { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual Terminal? Terminal { get; set; }
         public virtual Category Category { get; set; }
@@ -31,6 +31,8 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public virtual ICollection<Appointment>? UpdatedAppointments { get; set; }
         public virtual ICollection<Mission>? CreatedMissions { get; set; }
         public virtual ICollection<Mission>? UpdatedMissions { get; set; }
+        public virtual ICollection<SuperPower>? CreatedSuperPowers { get; set; }
+        public virtual ICollection<SuperPower>? UpdatedSuperPowers { get; set; }
 
     }
 }

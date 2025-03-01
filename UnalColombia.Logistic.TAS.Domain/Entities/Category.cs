@@ -7,6 +7,6 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public int CategoryId { get; set; }
         public string Name { get; set; }
         public int RankingNumber { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

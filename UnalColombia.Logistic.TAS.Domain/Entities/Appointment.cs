@@ -12,8 +12,8 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public Guid CalendarId { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan FinishTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime FinishTime { get; set; }
 
         public DateTime CreatedDate { get; set; }
         public Guid CreatedUserId { get; set; }

@@ -18,6 +18,17 @@ namespace UnalColombia.Logistic.TAS.Infrastructure.EntityConfiguration
                 .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false);
+
+            entity.HasOne(e => e.CreatedByUser)
+                .WithMany(u => u.CreatedSuperPowers)
+                .HasForeignKey(e => e.CreatedUserId);
+
+            entity.HasOne(e => e.UpdatedByUser)
+                .WithMany(u => u.UpdatedSuperPowers)
+                .HasForeignKey(e => e.LastUpdatedUserId)
+                .IsRequired(false);
+
+
         }
     }
 }

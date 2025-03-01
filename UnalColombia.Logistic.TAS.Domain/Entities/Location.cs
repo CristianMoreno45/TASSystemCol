@@ -8,7 +8,7 @@ namespace UnalColombia.Logistic.TAS.Domain.Entities
         public int TerminalId { get; set; }
         public string Name { get; set; }
         public string? FisicalLocation { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public virtual Terminal Terminal { get; set; }
         public virtual ICollection<HistoryAppointment>? HistoryAppointments { get; set; }
